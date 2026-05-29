@@ -17,6 +17,9 @@ build/
 *.sqlite3
 data/
 
+# Node
+node_modules/
+
 # Virtual environment
 .venv/
 venv/
