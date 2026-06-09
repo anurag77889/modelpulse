@@ -1,0 +1,10 @@
+.git
+.env
+*.db
+*.sqlite
+node_modules
+tests
+__pycache__
+.pytest_cache
+.flake8
+*.md
