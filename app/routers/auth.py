@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_current_user
@@ -15,7 +15,9 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
 @router.post("/register", response_model=UserResponse, status_code=201)
-def register(payload: UserCreate, db: Session = Depends(get_db)):
+@limiter.limit("3/minute")
+async def register(request: Request, payload: UserCreate,
+                   db: Session = Depends(get_db)):
     """Register a new user account."""
     user = create_user(db, payload)
     return user
@@ -23,7 +25,7 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=TokenResponse)
 @limiter.limit("5/minute")
-def login(payload: UserLogin, db: Session = Depends(get_db)):
+async def login(request: Request, payload: UserLogin, db: Session = Depends(get_db)):
     """Login and receive a JWT access token."""
     user = authenticate_user(db, payload.email, payload.password)
     token = create_access_token(subject=user.id)

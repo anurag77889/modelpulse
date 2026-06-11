@@ -4,6 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from unittest.mock import patch
 
 # File-based test DB — consistent across all connections
 TEST_DATABASE_URL = "sqlite:///./test_ml_monitor.db"
@@ -131,3 +132,10 @@ def logged_prediction(
     }, headers=auth_headers)
     assert response.status_code == 201
     return response.json()
+
+
+@pytest.fixture(autouse=True)
+def disable_rate_limiting():
+    """Disable slowapi rate limiting for all tests."""
+    with patch("slowapi.Limiter._check_request_limit"):
+        yield

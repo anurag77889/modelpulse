@@ -70,7 +70,11 @@ def get_application() -> FastAPI:
 
 app = get_application()
 
-limiter = Limiter(key_func=get_remote_address)
+default_limits = [] if settings.testing else ["100/minute"]
+# Create limiter instance - keyed by the caller's IP address
+limiter = Limiter(key_func=get_remote_address, default_limits=default_limits)
+
+# Attach to app
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
