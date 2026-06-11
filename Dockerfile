@@ -15,13 +15,13 @@ ENV PYTHONUNBUFFERED=1
 # Copy only requirements first — Docker layer caching means
 # this layer is only rebuilt when requirements.txt changes,
 # not on every code change. Big time saver.
-RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
-USER appuser
-
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
+
+# Create a non-root user
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 
 # ── Stage 3: Copy application code ────────────────────────────────────────────
 COPY . .
@@ -30,6 +30,11 @@ COPY . .
 # In production we persist this via a volume mount
 RUN mkdir -p /app/data
 
+# Givent the non-root user ownership of the app directory
+RUN chown -R appuser:appgroup /app
+
+# Switch to non-root user
+USER appuser
 # ── Stage 5: Expose port and run ──────────────────────────────────────────────
 EXPOSE 8000
 
