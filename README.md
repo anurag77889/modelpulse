@@ -1,6 +1,6 @@
 # ML Monitor API
 
-A FastAPI-based monitoring system for machine learning models, tracking predictions, performance metrics, and data drift.
+ML Model monitoring system built on top of FastAPI for your machine learning models, tracking predictions, performance metrics, and data drift.
 
 ## Features
 
