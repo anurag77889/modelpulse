@@ -7,9 +7,9 @@ ML Model monitoring system built on top of FastAPI for your machine learning mod
 - User authentication and authorization
 - ML model registration and management
 - Prediction logging and monitoring
-- Performance metrics tracking
-- Data drift detection
-- Alert system
+- Accurate performance metrics tracking
+- Instant data drift detection
+- Fast alert system
 
 ## Setup
 
