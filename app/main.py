@@ -12,6 +12,7 @@ from app.routers import alerts, auth, models, predictions
 from app import limiter
 from slowapi.errors import RateLimitExceeded
 from slowapi import _rate_limit_exceeded_handler
+from slowapi.middleware import SlowAPIMiddleware
 
 
 logging.basicConfig(
@@ -58,6 +59,10 @@ def get_application() -> FastAPI:
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
+    )
+
+    application.add_middleware(
+        SlowAPIMiddleware,
     )
 
     application.include_router(auth.router)

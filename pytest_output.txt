@@ -1,0 +1,3899 @@
+﻿EEEEEEEEFEE..EE.EE..E.EEEEEEEEEEEEEEEEEEEEE                              [100%]
+=================================== ERRORS ====================================
+___________ ERROR at setup of TestListAlerts.test_list_alerts_empty ___________
+
+self = <starlette.datastructures.State object at 0x000001E101DFF890>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E101C5F770>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E101DFF890>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_________ ERROR at setup of TestListAlerts.test_list_alerts_with_data _________
+
+self = <starlette.datastructures.State object at 0x000001E101DA3820>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E101F87110>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E101DA3820>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+__________ ERROR at setup of TestListAlerts.test_filter_by_severity ___________
+
+self = <starlette.datastructures.State object at 0x000001E102951480>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E10260FED0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102951480>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+___________ ERROR at setup of TestListAlerts.test_filter_unresolved ___________
+
+self = <starlette.datastructures.State object at 0x000001E102951A70>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E101DA3CE0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102951A70>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+________ ERROR at setup of TestResolveAlert.test_resolve_alert_success ________
+
+self = <starlette.datastructures.State object at 0x000001E102978180>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E10174E3F0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102978180>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+______ ERROR at setup of TestResolveAlert.test_resolve_alert_idempotent _______
+
+self = <starlette.datastructures.State object at 0x000001E102953E10>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E10296C950>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102953E10>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+___________ ERROR at setup of TestBulkResolve.test_bulk_resolve_all ___________
+
+self = <starlette.datastructures.State object at 0x000001E102979350>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102994380>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102979350>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+______________ ERROR at setup of TestAlertStats.test_alert_stats ______________
+
+self = <starlette.datastructures.State object at 0x000001E102979810>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102304380>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102979810>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+________ ERROR at setup of TestRegister.test_register_duplicate_email _________
+
+self = <starlette.datastructures.State object at 0x000001E10297AB10>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E1022DA360>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E10297AB10>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_______ ERROR at setup of TestRegister.test_register_duplicate_username _______
+
+self = <starlette.datastructures.State object at 0x000001E10297B950>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E1029008D0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E10297B950>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_______________ ERROR at setup of TestLogin.test_login_success ________________
+
+self = <starlette.datastructures.State object at 0x000001E1028E82B0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E10263D480>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E1028E82B0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+____________ ERROR at setup of TestLogin.test_login_wrong_password ____________
+
+self = <starlette.datastructures.State object at 0x000001E1028E9220>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102903BD0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E1028E9220>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_________ ERROR at setup of TestLogin.test_login_returns_no_password __________
+
+self = <starlette.datastructures.State object at 0x000001E10297B5C0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E1023078A0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E10297B5C0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_______________ ERROR at setup of TestGetMe.test_get_me_success _______________
+
+self = <starlette.datastructures.State object at 0x000001E10297A650>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102305590>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E10297A650>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_________ ERROR at setup of TestCreateModel.test_create_model_success _________
+
+self = <starlette.datastructures.State object at 0x000001E102978B00>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102A2B240>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102978B00>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_ ERROR at setup of TestCreateModel.test_create_model_missing_required_fields _
+
+self = <starlette.datastructures.State object at 0x000001E102978510>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102A29AE0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102978510>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+___________ ERROR at setup of TestListModels.test_list_models_empty ___________
+
+self = <starlette.datastructures.State object at 0x000001E101DA3950>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102996CF0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E101DA3950>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+__ ERROR at setup of TestListModels.test_list_models_returns_own_models_only __
+
+self = <starlette.datastructures.State object at 0x000001E101DA0D60>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102627460>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E101DA0D60>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_____ ERROR at setup of TestListModels.test_list_models_filter_by_status ______
+
+self = <starlette.datastructures.State object at 0x000001E101DA3230>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102624270>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E101DA3230>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+________ ERROR at setup of TestListModels.test_list_models_pagination _________
+
+self = <starlette.datastructures.State object at 0x000001E102953E10>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E101E428B0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102953E10>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_________ ERROR at setup of TestUpdateModel.test_update_model_success _________
+
+self = <starlette.datastructures.State object at 0x000001E102953230>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E10263C9E0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102953230>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_____ ERROR at setup of TestUpdateModel.test_update_model_invalid_status ______
+
+self = <starlette.datastructures.State object at 0x000001E102952EA0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E10263FCE0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102952EA0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+________ ERROR at setup of TestUpdateModel.test_update_model_forbidden ________
+
+self = <starlette.datastructures.State object at 0x000001E101DA09D0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E101E42F10>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E101DA09D0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_________ ERROR at setup of TestDeleteModel.test_delete_model_success _________
+
+self = <starlette.datastructures.State object at 0x000001E101DA0770>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102625E10>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E101DA0770>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+________ ERROR at setup of TestDeleteModel.test_delete_model_forbidden ________
+
+self = <starlette.datastructures.State object at 0x000001E101DA0C30>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102627BD0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E101DA0C30>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_______ ERROR at setup of TestLogPrediction.test_log_prediction_success _______
+
+self = <starlette.datastructures.State object at 0x000001E1029783E0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102A28490>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E1029783E0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+___ ERROR at setup of TestLogPrediction.test_log_prediction_model_not_found ___
+
+self = <starlette.datastructures.State object at 0x000001E1029795B0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102A2A030>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E1029795B0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+___ ERROR at setup of TestLogPrediction.test_log_prediction_unauthenticated ___
+
+self = <starlette.datastructures.State object at 0x000001E10297A9E0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102996030>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E10297A9E0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_ ERROR at setup of TestLogPrediction.test_log_prediction_invalid_confidence __
+
+self = <starlette.datastructures.State object at 0x000001E102951E00>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102306360>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102951E00>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_________ ERROR at setup of TestListPredictions.test_list_predictions _________
+
+self = <starlette.datastructures.State object at 0x000001E102952FD0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102307DF0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102952FD0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_______ ERROR at setup of TestListPredictions.test_filter_by_confidence _______
+
+self = <starlette.datastructures.State object at 0x000001E1029528B0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E10263E580>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E1029528B0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_________ ERROR at setup of TestListPredictions.test_filter_labelled __________
+
+self = <starlette.datastructures.State object at 0x000001E102953E10>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E1029039B0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102953E10>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_____ ERROR at setup of TestLabelPrediction.test_label_prediction_success _____
+
+self = <starlette.datastructures.State object at 0x000001E1029510F0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E1024FA250>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E1029510F0>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+____ ERROR at setup of TestLabelPrediction.test_label_prediction_not_found ____
+
+self = <starlette.datastructures.State object at 0x000001E10297B100>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E1029027A0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E10297B100>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+___________ ERROR at setup of TestPredictionStats.test_stats_empty ____________
+
+self = <starlette.datastructures.State object at 0x000001E10297BA80>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E102304050>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E10297BA80>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+_________ ERROR at setup of TestPredictionStats.test_stats_populated __________
+
+self = <starlette.datastructures.State object at 0x000001E102979480>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x000001E1023059D0>
+
+    @pytest.fixture
+    def registered_user(client: TestClient) -> dict:
+>       response = client.post("/auth/register", json={
+            "email": "test@example.com",
+            "username": "testuser",
+            "password": "testpassword123",
+        })
+
+tests\conftest.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E102979480>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+================================== FAILURES ===================================
+_____________________ TestRegister.test_register_success ______________________
+
+self = <starlette.datastructures.State object at 0x000001E10297A190>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:699: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <tests.test_auth.TestRegister object at 0x000001E1018B7D90>
+client = <starlette.testclient.TestClient object at 0x000001E1022D8160>
+
+    def test_register_success(self, client: TestClient):
+>       response = client.post("/auth/register", json={
+            "email": "new@example.com",
+            "username": "newuser",
+            "password": "securepassword",
+        })
+
+tests\test_auth.py:7: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\starlette\testclient.py:633: in post
+    return super().post(
+.venv\Lib\site-packages\httpx\_client.py:1145: in post
+    return self.request(
+.venv\Lib\site-packages\starlette\testclient.py:516: in request
+    return super().request(
+.venv\Lib\site-packages\httpx\_client.py:827: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+.venv\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv\Lib\site-packages\httpx\_client.py:1015: in _send_single_request
+    response = transport.handle_request(request)
+.venv\Lib\site-packages\starlette\testclient.py:398: in handle_request
+    raise exc
+.venv\Lib\site-packages\starlette\testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+c:\python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+c:\python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+.venv\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+.venv\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv\Lib\site-packages\starlette\applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+.venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\middleware\exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv\Lib\site-packages\starlette\routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv\Lib\site-packages\starlette\_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv\Lib\site-packages\starlette\routing.py:72: in app
+    response = await func(request)
+.venv\Lib\site-packages\fastapi\routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv\Lib\site-packages\fastapi\routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+.venv\Lib\site-packages\slowapi\extension.py:739: in async_wrapper
+    kwargs.get("response"), request.state.view_rate_limit  # type: ignore
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x000001E10297A190>
+key = 'view_rate_limit'
+
+    def __getattr__(self, key: typing.Any) -> typing.Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'view_rate_limit'
+
+.venv\Lib\site-packages\starlette\datastructures.py:702: AttributeError
+============================== warnings summary ===============================
+tests/test_alerts.py: 8 warnings
+tests/test_auth.py: 7 warnings
+tests/test_models.py: 11 warnings
+tests/test_predictions.py: 11 warnings
+  E:\ml-monitor-api\.venv\Lib\site-packages\sqlalchemy\sql\schema.py:3624: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return util.wrap_callable(lambda ctx: fn(), fn)  # type: ignore
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_auth.py::TestRegister::test_register_success - AttributeErr...
+ERROR tests/test_alerts.py::TestListAlerts::test_list_alerts_empty - Attribut...
+ERROR tests/test_alerts.py::TestListAlerts::test_list_alerts_with_data - Attr...
+ERROR tests/test_alerts.py::TestListAlerts::test_filter_by_severity - Attribu...
+ERROR tests/test_alerts.py::TestListAlerts::test_filter_unresolved - Attribut...
+ERROR tests/test_alerts.py::TestResolveAlert::test_resolve_alert_success - At...
+ERROR tests/test_alerts.py::TestResolveAlert::test_resolve_alert_idempotent
+ERROR tests/test_alerts.py::TestBulkResolve::test_bulk_resolve_all - Attribut...
+ERROR tests/test_alerts.py::TestAlertStats::test_alert_stats - AttributeError...
+ERROR tests/test_auth.py::TestRegister::test_register_duplicate_email - Attri...
+ERROR tests/test_auth.py::TestRegister::test_register_duplicate_username - At...
+ERROR tests/test_auth.py::TestLogin::test_login_success - AttributeError: 'St...
+ERROR tests/test_auth.py::TestLogin::test_login_wrong_password - AttributeErr...
+ERROR tests/test_auth.py::TestLogin::test_login_returns_no_password - Attribu...
+ERROR tests/test_auth.py::TestGetMe::test_get_me_success - AttributeError: 'S...
+ERROR tests/test_models.py::TestCreateModel::test_create_model_success - Attr...
+ERROR tests/test_models.py::TestCreateModel::test_create_model_missing_required_fields
+ERROR tests/test_models.py::TestListModels::test_list_models_empty - Attribut...
+ERROR tests/test_models.py::TestListModels::test_list_models_returns_own_models_only
+ERROR tests/test_models.py::TestListModels::test_list_models_filter_by_status
+ERROR tests/test_models.py::TestListModels::test_list_models_pagination - Att...
+ERROR tests/test_models.py::TestUpdateModel::test_update_model_success - Attr...
+ERROR tests/test_models.py::TestUpdateModel::test_update_model_invalid_status
+ERROR tests/test_models.py::TestUpdateModel::test_update_model_forbidden - At...
+ERROR tests/test_models.py::TestDeleteModel::test_delete_model_success - Attr...
+ERROR tests/test_models.py::TestDeleteModel::test_delete_model_forbidden - At...
+ERROR tests/test_predictions.py::TestLogPrediction::test_log_prediction_success
+ERROR tests/test_predictions.py::TestLogPrediction::test_log_prediction_model_not_found
+ERROR tests/test_predictions.py::TestLogPrediction::test_log_prediction_unauthenticated
+ERROR tests/test_predictions.py::TestLogPrediction::test_log_prediction_invalid_confidence
+ERROR tests/test_predictions.py::TestListPredictions::test_list_predictions
+ERROR tests/test_predictions.py::TestListPredictions::test_filter_by_confidence
+ERROR tests/test_predictions.py::TestListPredictions::test_filter_labelled - ...
+ERROR tests/test_predictions.py::TestLabelPrediction::test_label_prediction_success
+ERROR tests/test_predictions.py::TestLabelPrediction::test_label_prediction_not_found
+ERROR tests/test_predictions.py::TestPredictionStats::test_stats_empty - Attr...
+ERROR tests/test_predictions.py::TestPredictionStats::test_stats_populated - ...
+1 failed, 6 passed, 37 warnings, 36 errors in 39.03s
