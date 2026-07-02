@@ -9,7 +9,7 @@ from app.database import Base, engine
 from app.models import Alert, MLModel, Prediction, User  # noqa: F401
 from app.routers import alerts, auth, models, predictions
 
-from app import limiter
+from app.limiter import limiter
 from slowapi.errors import RateLimitExceeded
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.middleware import SlowAPIMiddleware
