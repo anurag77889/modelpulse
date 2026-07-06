@@ -65,6 +65,10 @@ def get_application() -> FastAPI:
         SlowAPIMiddleware,
     )
 
+    application.state.limiter = limiter
+
+    application.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
     application.include_router(auth.router)
     application.include_router(models.router)
     application.include_router(predictions.router)
@@ -74,9 +78,6 @@ def get_application() -> FastAPI:
 
 
 app = get_application()
-
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
 @app.get("/", tags=["Health"])
