@@ -5,6 +5,8 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from alembic import command
+from alembic.config import Config
 
 TEST_DATABASE_URL = "postgresql+psycopg://postgres:meradata89@localhost:5432" \
     "/modelpulse_test"
@@ -35,15 +37,16 @@ def override_get_db():
 @pytest.fixture(scope="function", autouse=True)
 def setup_database():
     """
-    Runs before every test.
-    Creates all tables on the SAME engine the app will use.
-    Drops everything after — zero state leakage.
+    Creates the schema using Alembic migrations before
+    each test and drops everything afterwards.
     """
     # Import Base and all models so metadata knows about all tables
     from app.database import Base
-    from app.models import Alert, MLModel, Prediction, User  # noqa: F401
+    from app.models import Alert, User, MLModel, Prediction
 
-    Base.metadata.create_all(bind=engine)
+    alembic_cfg = Config("alembic.ini")
+    command.upgrade(alembic_cfg, "head")
+
     yield
     Base.metadata.drop_all(bind=engine)
 
