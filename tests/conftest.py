@@ -8,12 +8,14 @@ from sqlalchemy.orm import sessionmaker
 from alembic import command
 from alembic.config import Config
 
-TEST_DATABASE_URL = "postgresql+psycopg://postgres:meradata89@localhost:5432" \
-    "/modelpulse_test"
+from dotenv import load_dotenv
+load_dotenv(".env.test", override=True)
+
+from app.config import settings
 
 # Create engine ONCE — shared across everything
 engine = create_engine(
-    TEST_DATABASE_URL,
+    settings.DATABASE_URL,
     pool_pre_ping=True
 )
 
@@ -59,9 +61,9 @@ def client(setup_database):
     used by the lifespan startup.
     """
     # Must set env vars before app is imported/created
-    os.environ["DATABASE_URL"] = TEST_DATABASE_URL
     os.environ["SECRET_KEY"] = "testsecretkey123fortest"
     os.environ["DEBUG"] = "True"
+    os.environ["TESTING"] = "True"
 
     from app.database import get_db
     from app.main import get_application
