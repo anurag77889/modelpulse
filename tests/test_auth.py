@@ -1,6 +1,9 @@
 import pytest
 from fastapi.testclient import TestClient
 
+from datetime import timedelta
+from app.core.security import create_access_token
+
 
 class TestRegister:
     def test_register_success(self, client: TestClient):
@@ -24,7 +27,8 @@ class TestRegister:
         })
         assert response.status_code == 409
 
-    def test_register_duplicate_username(self, client: TestClient, registered_user: dict):
+    def test_register_duplicate_username(
+            self, client: TestClient, registered_user: dict):
         response = client.post("/auth/register", json={
             "email": "different@example.com",
             "username": "testuser",         # same username as registered_user
@@ -48,6 +52,10 @@ class TestRegister:
         })
         assert response.status_code == 422
 
+    def test_register_missing_fields(self, client: TestClient):
+        response = client.post("/auth/register", json={})
+        assert response.status_code == 422
+
 
 class TestLogin:
     def test_login_success(self, client: TestClient, registered_user: dict):
@@ -57,7 +65,8 @@ class TestLogin:
         })
         assert response.status_code == 200
         body = response.json()
-        assert "access_token" in body
+        assert isinstance(body["access_token"], str)
+        assert body["access_token"] != ""
         assert body["token_type"] == "bearer"
 
     def test_login_wrong_password(self, client: TestClient, registered_user: dict):
@@ -83,6 +92,20 @@ class TestLogin:
         assert "password" not in body
         assert "hashed_password" not in body
 
+    def test_login_empty_fields(self, client: TestClient, registered_user: dict):
+        response = client.post("/auth/login", json={
+            "email": "",
+            "password": "",
+        })
+        body = response.json()
+
+        assert "detail" in body
+        assert response.status_code == 422
+
+    def test_login_empty_body(self, client: TestClient, registered_user: dict):
+        response = client.post("/auth/login", json={})
+        assert response.status_code == 422
+
 
 class TestGetMe:
     def test_get_me_success(self, client: TestClient, auth_headers: dict):
@@ -102,3 +125,23 @@ class TestGetMe:
             headers={"Authorization": "Bearer invalidtoken"}
         )
         assert response.status_code == 401
+
+    def test_get_me_invalid_authorization_header(self, client: TestClient):
+        response = client.get(
+            "/auth/me",
+            headers={"Authorization": "invalidtoken"}
+        )
+        assert response.status_code == 403
+
+    def test_get_me_expired_token(self, client: TestClient, registered_user: dict):
+
+        expired_token = create_access_token(
+            subject=registered_user["id"],
+            expires_delta=timedelta(minutes=-1)
+        )
+
+        response = client.get("/auth/me", headers={
+            "Authorization": f"Beared {expired_token}"
+        })
+
+        assert response.status_code == 403
