@@ -38,6 +38,28 @@ class TestCreateModel:
         assert response.status_code == 422
 
 
+class TestGetModel:
+    def test_get_model_success(
+            self, client: TestClient,
+            registered_model: dict,
+            auth_headers: dict):
+        model_id = registered_model["id"]
+        response = client.get(f"/models/{model_id}", headers=auth_headers)
+        body = response.json()
+
+        assert body["id"] == registered_model["id"]
+        assert body["name"] == registered_model["name"]
+        assert body["version"] == registered_model["version"]
+
+    def test_get_model_not_found(
+            self, client: TestClient,
+            registered_model: dict,
+            auth_headers: dict):
+        response = client.get("/models/9999999", headers=auth_headers)
+
+        assert response.status_code == 404
+
+
 class TestListModels:
     def test_list_models_empty(self, client: TestClient, auth_headers: dict):
         response = client.get("/models/", headers=auth_headers)
@@ -132,6 +154,31 @@ class TestUpdateModel:
         assert body["drift_threshold"] == 0.1
         assert body["name"] == registered_model["name"]  # unchanged
 
+    def test_update_non_existent_model(
+            self,
+            client: TestClient,
+            registered_model: dict,
+            auth_headers: dict
+    ):
+        model_id = 99999999
+        response = client.patch(
+            f"/models/{model_id}",
+            headers=auth_headers,
+            json={
+                "status": "production"
+            }
+        )
+        assert response.status_code == 404
+
+    def test_update_without_token(
+            self,
+            client: TestClient,
+            registered_model: dict,
+    ):
+        model_id = registered_model["id"]
+        response = client.patch(f"/models/{model_id}")
+        assert response.status_code == 403
+
     def test_update_model_invalid_status(
         self,
         client: TestClient,
@@ -187,6 +234,28 @@ class TestDeleteModel:
         # Confirm it's gone
         get_response = client.get(f"/models/{model_id}", headers=auth_headers)
         assert get_response.status_code == 404
+
+    def test_delete_non_existent_model(
+            self,
+            client: TestClient,
+            registered_model: dict,
+            auth_headers: dict
+    ):
+        model_id = 99999999
+        response = client.delete(
+            f"/models/{model_id}",
+            headers=auth_headers,
+        )
+        assert response.status_code == 404
+
+    def test_delete_without_token(
+            self,
+            client: TestClient,
+            registered_model: dict,
+    ):
+        model_id = registered_model["id"]
+        response = client.delete(f"/models/{model_id}")
+        assert response.status_code == 403
 
     def test_delete_model_forbidden(
         self,
