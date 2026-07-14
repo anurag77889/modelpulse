@@ -55,6 +55,20 @@ class TestListAlerts:
         body = response.json()
         assert body["total"] == 2
 
+    def test_list_alerts_without_token(
+            self,
+            client: TestClient,
+            registered_model: dict
+    ):
+        model_id = registered_model["id"]
+        _seed_alert(model_id, "drift_detected", "high")
+        _seed_alert(model_id, "low_confidence", "medium")
+
+        response = client.get(
+            f"/models/{model_id}/alerts/",
+        )
+        assert response.status_code == 403
+
     def test_filter_by_severity(
         self,
         client: TestClient,
@@ -116,6 +130,79 @@ class TestResolveAlert:
         assert body["is_resolved"] is True
         assert body["resolved_at"] is not None
 
+    def test_resolve_alert_without_token(
+            self,
+            client: TestClient,
+            registered_model: dict,
+            auth_headers: dict,
+    ):
+        model_id = registered_model["id"]
+        _seed_alert(model_id, "drift_detected", "high")
+
+        # Get the alert ID
+        alerts = client.get(
+            f"/models/{model_id}/alerts/",
+            headers=auth_headers
+        )
+        alert_id = alerts.json()["items"][0]["id"]
+
+        response = client.patch(
+            f"/models/{model_id}/alerts/{alert_id}/resolve",
+        )
+
+        assert response.status_code == 403
+
+    def test_resolve_alert_not_found(
+            self,
+            client: TestClient,
+            registered_model: dict,
+            auth_headers: dict
+    ):
+        model_id = registered_model["id"]
+        alert_id = 9999999
+
+        response = client.patch(
+            f"/models/{model_id}/alerts/{alert_id}/resolve",
+            headers=auth_headers,
+        )
+
+        assert response.status_code == 404
+
+    def test_resolve_alert_forbidden(
+        self,
+        client: TestClient,
+        registered_model: dict,
+        auth_headers: dict
+    ):
+        # Second user tries to label first user's prediction
+        client.post("/auth/register", json={
+            "email": "attacker@example.com",
+            "username": "attacker",
+            "password": "password123",
+        })
+        login = client.post("/auth/login", json={
+            "email": "attacker@example.com",
+            "password": "password123",
+        })
+        attacker_headers = {
+            "Authorization": f"Bearer {login.json()['access_token']}"
+        }
+        model_id = registered_model["id"]
+        _seed_alert(model_id, "drift_detected", "high")
+
+        # Get the alert ID
+        alerts = client.get(
+            f"/models/{model_id}/alerts/",
+            headers=auth_headers
+        )
+        alert_id = alerts.json()["items"][0]["id"]
+
+        response = client.patch(
+            f"/models/{model_id}/alerts/{alert_id}/resolve",
+            headers=attacker_headers,
+        )
+        assert response.status_code == 403
+
     def test_resolve_alert_idempotent(
         self,
         client: TestClient,
@@ -163,10 +250,10 @@ class TestBulkResolve:
 
         # Confirm all resolved
         alerts = client.get(
-            f"/models/{model_id}/alerts/?is_resolved=false",
+            f"/models/{model_id}/alerts/?is_resolved=true",
             headers=auth_headers,
         )
-        assert alerts.json()["total"] == 0
+        assert alerts.json()["total"] == 3
 
 
 class TestAlertStats:
@@ -193,3 +280,19 @@ class TestAlertStats:
         assert body["by_severity"]["critical"] == 1
         assert body["by_type"]["drift_detected"] == 2
         assert body["by_type"]["low_confidence"] == 1
+
+    def test_alert_stats_empty(
+            self,
+            client: TestClient,
+            registered_model: dict,
+            auth_headers: dict
+    ):
+        model_id = registered_model["id"]
+
+        response = client.get(
+            f"/models/{model_id}/alerts/stats",
+            headers=auth_headers
+        )
+        body = response.json()
+        assert response.status_code == 200
+        assert body["total_alerts"] == 0
