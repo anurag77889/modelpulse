@@ -149,3 +149,19 @@ def disable_rate_limiting():
     limiter.enabled = False
     yield
     limiter.enabled = original
+
+
+@pytest.fixture
+def enable_rate_limiting():
+    from app.limiter import limiter
+
+    original = limiter.enabled
+    limiter.enabled = True
+
+    # Reset the rate limiter state
+    limiter._storage.reset()
+
+    yield
+
+    limiter.enabled = original
+    limiter._storage.reset()
