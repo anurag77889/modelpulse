@@ -1,6 +1,7 @@
 # Environment
 .env
 .env.production
+.env.test
 
 # Python
 __pycache__/

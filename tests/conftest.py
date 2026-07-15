@@ -50,7 +50,7 @@ def setup_database():
     command.upgrade(alembic_cfg, "head")
 
     yield
-    Base.metadata.drop_all(bind=engine)
+    command.downgrade(alembic_cfg, "base")
 
 
 @pytest.fixture(scope="function")
