@@ -3,6 +3,8 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import status
+from fastapi.responses import JSONResponse
 
 from app.config import settings
 from app.database import Base, engine
@@ -13,6 +15,8 @@ from app.limiter import limiter
 from slowapi.errors import RateLimitExceeded
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.middleware import SlowAPIMiddleware
+
+from app.core.redis import redis_client
 
 
 logging.basicConfig(
@@ -28,11 +32,19 @@ async def lifespan(app: FastAPI):
     # Startup
     logger.info(f"Starting {settings.APP_NAME}")
     logger.info(f"DEBUG={settings.DEBUG}")
+    try:
+        redis_client.ping()
+        logger.info("Redis connected successfully.")
+    except Exception as e:
+        logger.warning(f"Redis unavailable: {e}. Continuing without cache.")
+
     if settings.DEBUG:
         Base.metadata.create_all(bind=engine)
     logger.info("Database tables verified")
     yield
     # Shutdown
+    redis_client.close()
+    logger.info("Redis connection closed.")
     logger.info(f"Shutting down {settings.APP_NAME}")
 
 
@@ -96,3 +108,27 @@ def health():
     Railway/Render ping this to verify the service is alive.
     """
     return {"status": "healthy"}
+
+
+@app.get("/health/redis", tags=["Redis"])
+def redis_health():
+    """
+    Dedicated Redis health check endpoint.
+    Railway/Render ping this to verify the redis service is alive.
+    """
+    try:
+        redis_client.ping()
+
+        return {
+            "status": "healthy",
+            "service": "redis"
+        }
+    except Exception as e:
+        logger.warning(f"Redis health check failed: {e}")
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content={
+                "status": "unhealthy",
+                "service": "redis",
+            }
+        )
