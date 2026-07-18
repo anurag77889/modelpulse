@@ -2,6 +2,7 @@
 .env
 .env.production
 .env.test
+.env.example
 
 # Python
 __pycache__/
