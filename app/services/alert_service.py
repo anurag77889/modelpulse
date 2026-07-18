@@ -8,6 +8,8 @@ from app.core.exceptions import ForbiddenException, NotFoundException
 from app.models.alert import Alert
 from app.models.ml_model import MLModel
 
+from app.utils.cache import invalidate_model_summary_cache
+
 logger = logging.getLogger(__name__)
 
 
@@ -115,6 +117,7 @@ def resolve_alert(
     alert.resolved_at = datetime.now(UTC)
     db.commit()
     db.refresh(alert)
+    invalidate_model_summary_cache(model_id)
 
     logger.info(
         f"[AlertService] Resolved alert_id={alert_id} "

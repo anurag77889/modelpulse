@@ -7,6 +7,13 @@ from app.models.ml_model import MLModel
 from app.models.prediction import Prediction
 from app.schemas.ml_model import MLModelCreate, MLModelUpdate
 
+from app.core.redis import redis_client
+import json
+from fastapi.encoders import jsonable_encoder
+from app.config import settings
+
+from app.core.logging import logger
+
 
 def create_model(
     db: Session, payload: MLModelCreate, owner_id: int
@@ -110,6 +117,20 @@ def get_model_summary(
     if model.owner_id != current_user_id:
         raise ForbiddenException
 
+    cache_key = f"model:{model_id}:summary"
+
+    try:
+        cached_summary = redis_client.get(cache_key)
+    except Exception:
+        logger.warning("Redis unavailable. Falling back to database.")
+        cached_summary = None
+
+    if cached_summary:
+        logger.info("Cache hit for model summary.")
+        return json.loads(cached_summary)
+
+    logger.info("Cache miss for model summary.")
+
     stats = db.query(
         func.count(Prediction.id).label("total_predictions"),
         func.avg(Prediction.confidence_score).label("avg_confidence"),
@@ -129,7 +150,7 @@ def get_model_summary(
         .first()
     )
 
-    return {
+    summary = {
         "model_id": model_id,
         "model_name": model.name,
         "status": model.status,
@@ -142,3 +163,16 @@ def get_model_summary(
             latest_prediction.created_at if latest_prediction else None
         ),
     }
+
+    cache_data = jsonable_encoder(summary)
+
+    try:
+        redis_client.setex(
+            cache_key,
+            settings.REDIS_CACHE_TTL_SECONDS,
+            json.dumps(cache_data),
+        )
+    except Exception:
+        logger.warning("Failed to populate Redis cache.")
+
+    return summary
