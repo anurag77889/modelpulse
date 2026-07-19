@@ -11,12 +11,10 @@ from alembic.config import Config
 from pathlib import Path
 from dotenv import load_dotenv
 
-if not Path(".env.test").exists():
-    raise RuntimeError(
-        ".env.test not found. Create it before running tests."
-    )
+env_file = Path(".env.test")
 
-load_dotenv(".env.test", override=True)
+if env_file.exists():
+    load_dotenv(".env.test", override=True)
 
 from app.config import settings
 
