@@ -26,6 +26,7 @@ jobs:
       TESTING: "True"
       SECRET_KEY: testsecretkey
       DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/modelpulse_test
+      REDIS_URL: redis://localhost:6379
 
     steps:
       - name: Checkout code
