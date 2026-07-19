@@ -8,7 +8,14 @@ from sqlalchemy.orm import sessionmaker
 from alembic import command
 from alembic.config import Config
 
+from pathlib import Path
 from dotenv import load_dotenv
+
+if not Path(".env.test").exists():
+    raise RuntimeError(
+        ".env.test not found. Create it before running tests."
+    )
+
 load_dotenv(".env.test", override=True)
 
 from app.config import settings
