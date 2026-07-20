@@ -14,6 +14,8 @@ from app.config import settings
 
 from app.core.logging import logger
 
+from app.utils.cache import invalidate_model_summary_cache
+
 
 def create_model(
     db: Session, payload: MLModelCreate, owner_id: int
@@ -87,6 +89,7 @@ def update_model(
 
     db.commit()
     db.refresh(model)
+    invalidate_model_summary_cache(model_id)
     return model
 
 
@@ -102,6 +105,7 @@ def delete_model(db: Session, model_id: int, current_user_id: int) -> None:
 
     db.delete(model)
     db.commit()
+    invalidate_model_summary_cache(model_id)
 
 
 def get_model_summary(
