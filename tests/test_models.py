@@ -1,5 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
+from app.utils.cache import model_summary_cache_key
+from app.core.redis import redis_client
 
 
 class TestCreateModel:
@@ -219,6 +221,50 @@ class TestUpdateModel:
         )
         assert response.status_code == 403
 
+    def test_update_model_invalidates_summary_cache(
+            self,
+            client: TestClient,
+            registered_model: dict,
+            auth_headers: dict,
+    ):
+        model_id = registered_model["id"]
+        cache_key = model_summary_cache_key(model_id)
+
+        # Populate cache
+        response = client.get(
+            f"/models/{model_id}/summary",
+            headers=auth_headers
+        )
+        assert response.status_code == 200
+
+        # Cache should now exist
+        assert redis_client.exists(cache_key) == 1
+
+        # Update the model
+        response = client.patch(
+            f"/models/{model_id}",
+            json={"name": "Updated Model"},
+            headers=auth_headers
+        )
+
+        assert response.status_code == 200
+
+        # Cache should be invalidated
+        assert redis_client.exists(cache_key) == 0
+
+        response = client.get(
+            f"/models/{model_id}/summary",
+            headers=auth_headers,
+        )
+
+        assert response.status_code == 200
+
+        body = response.json()
+
+        assert body["model_name"] == "Updated Model"
+
+        assert redis_client.exists(cache_key) == 1
+
 
 class TestDeleteModel:
     def test_delete_model_success(
@@ -280,3 +326,33 @@ class TestDeleteModel:
             headers=attacker_headers,
         )
         assert response.status_code == 403
+
+    def test_delete_model_invalidates_summary_cache(
+        self,
+        client: TestClient,
+        registered_model: dict,
+        auth_headers: dict,
+    ):
+        model_id = registered_model["id"]
+        cache_key = model_summary_cache_key(model_id)
+
+        # Populate cache
+        response = client.get(
+            f"/models/{model_id}/summary",
+            headers=auth_headers
+        )
+        assert response.status_code == 200
+
+        # Cache should now exist
+        assert redis_client.exists(cache_key) == 1
+
+        # Delete the model
+        response = client.delete(
+            f"/models/{model_id}",
+            headers=auth_headers
+        )
+
+        assert response.status_code == 204
+
+        # Cache should be removed
+        assert redis_client.exists(cache_key) == 0

@@ -18,6 +18,8 @@ if env_file.exists():
 
 from app.config import settings
 
+from app.core.redis import redis_client
+
 # Create engine ONCE — shared across everything
 engine = create_engine(
     settings.DATABASE_URL,
@@ -170,3 +172,10 @@ def enable_rate_limiting():
 
     limiter.enabled = original
     limiter._storage.reset()
+
+
+@pytest.fixture
+def clear_redis():
+    redis_client.flushdb()
+    yield
+    redis_client.flushdb()

@@ -12,3 +12,7 @@ def invalidate_model_summary_cache(model_id: int) -> None:
         logger.info(f"Invalidated cache for model {model_id}.")
     except RedisError as e:
         logger.warning(f"Failed to invalidate cache for model {model_id}: {e}")
+
+
+def model_summary_cache_key(model_id: int) -> str:
+    return f"model:{model_id}:summary"
