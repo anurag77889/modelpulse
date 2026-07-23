@@ -4,6 +4,8 @@ from fastapi.testclient import TestClient
 from app.models.alert import Alert
 from tests.conftest import TestingSessionLocal
 
+from app.core.redis import redis_client
+from app.utils.cache import model_summary_cache_key
 
 def _seed_alert(model_id: int, alert_type: str, severity: str) -> None:
     """Directly insert an alert into the test DB — bypasses background tasks."""
@@ -226,6 +228,59 @@ class TestResolveAlert:
         )
         assert r1.status_code == 200
         assert r2.status_code == 200
+
+    def test_resolve_alert_invalidates_summary_cache(
+        self,
+        client: TestClient,
+        registered_model: dict,
+        auth_headers: dict,
+    ):
+        model_id = registered_model["id"]
+        cache_key = model_summary_cache_key(model_id)
+
+        _seed_alert(model_id, "drift_detected", "high")
+
+        # Populate cache
+        response = client.get(
+            f"/models/{model_id}/summary",
+            headers=auth_headers,
+        )
+
+        assert response.status_code == 200
+        assert redis_client.exists(cache_key) == 1
+
+        # Verify initial unresolved alerts
+        assert response.json()["unresolved_alerts"] == 1
+
+        # Get alert ID
+        alerts = client.get(
+            f"/models/{model_id}/alerts/",
+            headers=auth_headers,
+        )
+        alert_id = alerts.json()["items"][0]["id"]
+
+        # Resolve alert
+        response = client.patch(
+            f"/models/{model_id}/alerts/{alert_id}/resolve",
+            headers=auth_headers,
+        )
+
+        assert response.status_code == 200
+
+        # Cache should be invalidated
+        assert redis_client.exists(cache_key) == 0
+
+        # Cache should be rebuilt with updated statistics
+        response = client.get(
+            f"/models/{model_id}/summary",
+            headers=auth_headers,
+        )
+
+        assert response.status_code == 200
+        body = response.json()
+
+        assert body["unresolved_alerts"] == 0
+        assert redis_client.exists(cache_key) == 1
 
 
 class TestBulkResolve:

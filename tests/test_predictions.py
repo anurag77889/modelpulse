@@ -1,5 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
+from app.utils.cache import model_summary_cache_key
+from app.core.redis import redis_client
 
 
 class TestLogPrediction:
@@ -55,6 +57,52 @@ class TestLogPrediction:
             "confidence_score": 1.5,    # must be <= 1.0
         }, headers=auth_headers)
         assert response.status_code == 422
+
+    def test_log_prediction_invalidates_summary_cache(
+        self,
+        client: TestClient,
+        registered_model: dict,
+        auth_headers: dict,
+    ):
+        model_id = registered_model["id"]
+        cache_key = model_summary_cache_key(model_id)
+
+        # Populate cache
+        response = client.get(
+            f"/models/{model_id}/summary",
+            headers=auth_headers,
+        )
+        assert response.status_code == 200
+        assert redis_client.exists(cache_key) == 1
+
+        # Log prediction
+        response = client.post(
+            f"/models/{model_id}/predictions/",
+            json={
+                "input_data": {"age": 34, "tenure_months": 12},
+                "prediction_output": {"label": "churn", "probability": 0.87},
+                "confidence_score": 0.87,
+                "latency_ms": 42.5,
+            },
+            headers=auth_headers,
+        )
+
+        assert response.status_code == 201
+
+        # Cache should be invalidated
+        assert redis_client.exists(cache_key) == 0
+
+        # Cache should be rebuilt with fresh data
+        response = client.get(
+            f"/models/{model_id}/summary",
+            headers=auth_headers,
+        )
+
+        assert response.status_code == 200
+        body = response.json()
+
+        assert body["total_predictions"] == 1
+        assert redis_client.exists(cache_key) == 1
 
 
 class TestListPredictions:
