@@ -207,6 +207,18 @@ REDIS_CACHE_TTL_SECONDS=
 
 ## Roadmap
 
+#### Sprint 1  ✅ Git Workflow + README
+#### Sprint 2  ✅ Production Deployment
+#### Sprint 3  ✅ PostgreSQL Migration
+#### Sprint 4  ✅ Production-Grade Testing Infrastructure 
+#### Sprint 5  ✅ Redis Integration
+#### Sprint 6  🔄 Background Workers (Celery/Dramatiq)
+#### Sprint 7  📊 Prometheus + Grafana
+#### Sprint 8  🧪 Testing (80%+ Coverage)
+#### Sprint 9  🔒 Security Hardening
+#### Sprint 10  ⚙️ Performance & Optimization
+#### Sprint 11 📈 Production Polish
+
 ## Future Improvements
 
 ## Contributing
