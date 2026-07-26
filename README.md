@@ -141,6 +141,8 @@ Machine learning models often degrade after deployment due to data drift and cha
 
 ## System Architecture
 
+<img width="362" height="542" alt="Architecture Diagram" src="https://github.com/user-attachments/assets/a487de9e-47f1-40aa-9b41-d8e869120d9c" />
+
 ## Tech Stack
 
 ### Backend
