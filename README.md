@@ -145,31 +145,16 @@ Machine learning models often degrade after deployment due to data drift and cha
 
 ## Tech Stack
 
-### Backend
- - Python
- - FastAPI
-
-### Database
- - PostgreSQL
-
-### Caching
- - Redis
-
-### Authentication
- - JWT
-
-### ORM
- - SQLAlchemy
-
-### Migration
- - Alembic
-
-### Testing
- - Pytest
-
-### Deployment
- - Docker
- - Railway
+| Layer           | Technology          |
+| :---            | :---:               |
+| Backend         | Python, FastAPI     |
+| Database        | PostgreSQL          |
+| Caching         | Redis               |
+| Authentication  | JWT                 |
+| ORM             | SQLAlchemy          |
+| Migration       | Alembic             |
+| Testing         | Pytest              |
+| Deployment      | Docker, Railway     |
 
 ## Project Structure
 ```
@@ -182,6 +167,7 @@ app/
     tasks/            → Background workers
     utils/            → Helper functions
 ```
+
 ## Getting Started
 
 ## Environment Variables
