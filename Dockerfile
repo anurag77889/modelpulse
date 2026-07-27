@@ -26,9 +26,7 @@ RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 # ── Stage 3: Copy application code ────────────────────────────────────────────
 COPY . .
 
-# ── Stage 4: Create directory for SQLite database ─────────────────────────────
-# In production we persist this via a volume mount
-RUN mkdir -p /app/data
+# ── Stage 4: Copy application source ─────────────────────────────
 
 # Givent the non-root user ownership of the app directory
 RUN chown -R appuser:appgroup /app
