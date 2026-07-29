@@ -9,7 +9,7 @@ from app.models.prediction import Prediction
 from app.schemas.prediction import PredictionCreate, PredictionUpdate
 from app.services.model_service import get_model_by_id
 
-from app.utils.cache import invalidate_model_summary_cache
+from app.tasks.prediction_tasks import process_prediction_task
 
 
 def _assert_model_ownership(model: MLModel, user_id: int) -> None:
@@ -44,8 +44,18 @@ def log_prediction(
     db.add(prediction)
     db.commit()
     db.refresh(prediction)
-    invalidate_model_summary_cache(model_id)
+
+    process_prediction_task.delay(prediction.id)
+
     return prediction
+
+
+def get_prediction(db: Session, prediction_id: int) -> Prediction | None:
+    return (
+        db.query(Prediction)
+        .filter(Prediction.id == prediction_id)
+        .first()
+    )
 
 
 def get_predictions(
