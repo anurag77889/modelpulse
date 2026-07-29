@@ -12,7 +12,7 @@ Production-grade backend service for monitoring deployed ML models, detecting pr
 ![Pytest](https://img.shields.io/badge/pytest-%23ffffff.svg?style=for-the-badge&logo=pytest&logoColor=2f9fe3)
 ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
-  
+
 ---
 
 ⭐ Detect prediction drift before production failures
@@ -210,7 +210,7 @@ REDIS_CACHE_TTL_SECONDS=
 #### Sprint 1  ✅ Git Workflow + README
 #### Sprint 2  ✅ Production Deployment
 #### Sprint 3  ✅ PostgreSQL Migration
-#### Sprint 4  ✅ Production-Grade Testing Infrastructure 
+#### Sprint 4  ✅ Production-Grade Testing Infrastructure
 #### Sprint 5  ✅ Redis Integration
 #### Sprint 6  🔄 Background Workers (Celery/Dramatiq)
 #### Sprint 7  📊 Prometheus + Grafana

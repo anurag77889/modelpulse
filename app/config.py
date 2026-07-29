@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     APP_NAME: str = "ML Monitor API"
-    DEBUG: bool = False
+    DEBUG: bool = True
     TESTING: bool = False
     SECRET_KEY: str = ""
     ALGORITHM: str = "HS256"
