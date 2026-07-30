@@ -35,8 +35,6 @@ Machine learning models often degrade after deployment due to data drift and cha
 - Railway Deployment
 - RESTful API with OpenAPI Documentation
 - 72 Automated Integration Tests
-- Clean Layered Architecture
-
 
 ## Features
 
