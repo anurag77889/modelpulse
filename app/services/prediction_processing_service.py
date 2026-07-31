@@ -7,35 +7,16 @@ from app.services.prediction_service import get_prediction
 
 
 def process_prediction(db: Session, prediction_id: int):
-    logger.info("Processing prediction %s", prediction_id)
+    prediction = get_prediction(db, prediction_id)
 
-    try:
-        prediction = get_prediction(db, prediction_id)
+    if prediction is None:
+        logger.warning("Prediction %s not found", prediction_id)
+        return
 
-        if prediction is None:
-            logger.warning(
-                "Prediction %s not found",
-                prediction_id
-            )
-            return
+    run_drift_detection(
+        db=db,
+        prediction_id=prediction.id,
+        model_id=prediction.ml_model_id,
+    )
 
-        run_drift_detection(
-            db=db,
-            prediction_id=prediction.id,
-            model_id=prediction.ml_model_id,
-        )
-
-        invalidate_model_summary_cache(
-            prediction.ml_model_id
-        )
-
-        logger.info(
-            "Finished processing prediction %s", prediction_id,
-        )
-
-    except Exception:
-        logger.exception(
-            "Failed to process prediction %s",
-            prediction_id,
-        )
-        raise
+    invalidate_model_summary_cache(prediction.ml_model_id)
