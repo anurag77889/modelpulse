@@ -42,9 +42,8 @@ Machine learning models often degrade after deployment due to data drift and cha
 
 - JWT-based user authentication
 - Secure user registration and login
-- Password hashing with bcrypt
 - Protected API endpoints
-- Ownership-based authorization for resources
+- Ownership-based authorization
 
 ---
 
