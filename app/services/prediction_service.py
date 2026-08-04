@@ -9,8 +9,6 @@ from app.models.prediction import Prediction
 from app.schemas.prediction import PredictionCreate, PredictionUpdate
 from app.services.model_service import get_model_by_id
 
-from app.tasks.prediction_tasks import process_prediction_task
-
 
 def _assert_model_ownership(model: MLModel, user_id: int) -> None:
     """
@@ -45,6 +43,7 @@ def log_prediction(
     db.commit()
     db.refresh(prediction)
 
+    from app.tasks.prediction_tasks import process_prediction_task
     process_prediction_task.delay(prediction.id)
 
     return prediction

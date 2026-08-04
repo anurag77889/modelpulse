@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import patch
 from fastapi.testclient import TestClient
 from app.utils.cache import model_summary_cache_key
 from app.core.redis import redis_client
@@ -103,6 +104,33 @@ class TestLogPrediction:
 
         assert body["total_predictions"] == 1
         assert redis_client.exists(cache_key) == 1
+
+    @patch("app.tasks.prediction_service.process_prediction_task.delay")
+    def test_log_prediction_enqueues_background_task(
+        self,
+        mock_delay,
+        client: TestClient,
+        registered_model: dict,
+        auth_headers: dict,
+    ):
+        model_id = registered_model["id"]
+
+        response = client.post(
+            f"/models/{model_id}/predictions/",
+            json={
+                "input_data": {"age": 34},
+                "prediction_output": {"label": "churn"},
+                "confidence_score": 0.87,
+                "latency_ms": 42.5,
+            },
+            headers=auth_headers,
+        )
+
+        assert response.status_code == 201
+
+        prediction_id = response.json()["id"]
+
+        mock_delay.assert_called_once_with(prediction_id)
 
 
 class TestListPredictions:

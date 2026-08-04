@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.core.logging import logger
-from tasks.drift_detector import run_drift_detection
+from app.services.drift_detection_service import run_drift_detection
 from app.utils.cache import invalidate_model_summary_cache
 from app.services.prediction_service import get_prediction
 
