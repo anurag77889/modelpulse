@@ -18,6 +18,8 @@ if env_file.exists():
 
 from app.config import settings
 
+print(settings.DATABASE_URL)
+
 from app.core.redis import redis_client
 
 # Create engine ONCE — shared across everything
@@ -43,7 +45,7 @@ def override_get_db():
         db.close()
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="function")
 def setup_database():
     """
     Creates the schema using Alembic migrations before
