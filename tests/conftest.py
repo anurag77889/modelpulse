@@ -21,6 +21,7 @@ from app.config import settings
 print(settings.DATABASE_URL)
 
 from app.core.redis import redis_client
+from app.core.celery import celery_app
 
 # Create engine ONCE — shared across everything
 engine = create_engine(
@@ -181,3 +182,17 @@ def clear_redis():
     redis_client.flushdb()
     yield
     redis_client.flushdb()
+
+
+@pytest.fixture
+def celery_eager():
+    old = celery_app.conf.task_always_eager
+    old_propagates = celery_app.conf.task_eager_propagates
+
+    celery_app.conf.task_always_eager = True
+    celery_app.conf.task_eager_propagates = True
+
+    yield
+
+    celery_app.conf.task_always_eager = old
+    celery_app.conf.task_eager_propagates = old_propagates
