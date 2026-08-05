@@ -90,22 +90,7 @@ class TestLogPrediction:
 
         assert response.status_code == 201
 
-        # Cache should be invalidated
-        assert redis_client.exists(cache_key) == 0
-
-        # Cache should be rebuilt with fresh data
-        response = client.get(
-            f"/models/{model_id}/summary",
-            headers=auth_headers,
-        )
-
-        assert response.status_code == 200
-        body = response.json()
-
-        assert body["total_predictions"] == 1
-        assert redis_client.exists(cache_key) == 1
-
-    @patch("app.tasks.prediction_service.process_prediction_task.delay")
+    @patch("app.tasks.prediction_tasks.process_prediction_task.delay")
     def test_log_prediction_enqueues_background_task(
         self,
         mock_delay,
@@ -131,6 +116,51 @@ class TestLogPrediction:
         prediction_id = response.json()["id"]
 
         mock_delay.assert_called_once_with(prediction_id)
+
+    def test_log_prediction_processes_background_task(
+        self,
+        celery_eager,
+        client: TestClient,
+        registered_model: dict,
+        auth_headers: dict,
+    ):
+        model_id = registered_model["id"]
+        cache_key = model_summary_cache_key(model_id)
+
+        # Build cache
+        response = client.get(
+            f"/models/{model_id}/summary",
+            headers=auth_headers,
+        )
+
+        assert response.status_code == 200
+        assert redis_client.exists(cache_key) == 1
+
+        # Log prediction
+        response = client.post(
+            f"/models/{model_id}/predictions/",
+            json={
+                "input_data": {"age": 34},
+                "prediction_output": {"label": "churn"},
+                "confidence_score": 0.87,
+                "latency_ms": 42.5,
+            },
+            headers=auth_headers,
+        )
+
+        assert response.status_code == 201
+
+        # Background task has already executed
+        assert redis_client.exists(cache_key) == 0
+
+        response = client.get(
+            f"/models/{model_id}/summary",
+            headers=auth_headers,
+        )
+
+        assert response.status_code == 200
+
+        assert response.json()["total_predictions"] == 1
 
 
 class TestListPredictions:
