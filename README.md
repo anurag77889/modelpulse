@@ -8,6 +8,7 @@ Production-grade backend service for monitoring deployed ML models, detecting pr
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571.svg?style=for-the-badge&logo=fastapi)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
+![Celery](https://img.shields.io/badge/celery-%23a9cc54.svg?style=for-the-badge&logo=celery&logoColor=ddf4a4)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Pytest](https://img.shields.io/badge/pytest-%23ffffff.svg?style=for-the-badge&logo=pytest&logoColor=2f9fe3)
 ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
@@ -105,6 +106,17 @@ Machine learning models often degrade after deployment due to data drift and cha
 
 ---
 
+### 🔄 Celery Workers
+
+- Asynchronous background processing using Celery
+- Automatic prediction post-processing
+- Background drift detection
+- Automatic alert generation
+- Automatic Redis cache invalidation
+- Automatic retry with exponential backoff
+
+---
+
 ### 🗄 Database
 
 - PostgreSQL persistence
@@ -125,7 +137,7 @@ Machine learning models often degrade after deployment due to data drift and cha
 - Redis cache lifecycle verification
 - Dedicated Redis test database
 - Automatic test isolation
-- **72 automated tests passing**
+- **78 automated tests passing**
 
 ---
 
@@ -144,7 +156,7 @@ Machine learning models often degrade after deployment due to data drift and cha
 
 | Layer           | Technology          |
 | :---            | :---:               |
-| Backend         | Python, FastAPI     |
+| Backend         | Python, FastAPI, Celery    |
 | Database        | PostgreSQL          |
 | Caching         | Redis               |
 | Authentication  | JWT                 |
@@ -177,6 +189,8 @@ ACCESS_TOKEN_EXPIRE_MINUTES=
 DATABASE_URL=
 REDIS_URL=
 REDIS_CACHE_TTL_SECONDS=
+CELERY_BROKER_URL=
+CELERY_RESULT_BACKEND=
 ```
 ## Running with Docker
 
@@ -197,11 +211,11 @@ REDIS_CACHE_TTL_SECONDS=
 #### Sprint 3  ✅ PostgreSQL Migration
 #### Sprint 4  ✅ Production-Grade Testing Infrastructure
 #### Sprint 5  ✅ Redis Integration
-#### Sprint 6  🔄 Background Workers (Celery/Dramatiq)
+#### Sprint 6  ✅ Background Workers (Celery/Dramatiq)
 #### Sprint 7  📊 Prometheus + Grafana
 #### Sprint 8  🧪 Testing (80%+ Coverage)
 #### Sprint 9  🔒 Security Hardening
-#### Sprint 10  ⚙️ Performance & Optimization
+#### Sprint 10 ⚙️ Performance & Optimization
 #### Sprint 11 📈 Production Polish
 
 ## Future Improvements
