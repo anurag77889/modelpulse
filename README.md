@@ -1,4 +1,4 @@
-# ML Monitor API
+# ModelPulse
 
 > Monitor. Detect. Alert.
 
