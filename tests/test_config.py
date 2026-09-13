@@ -9,6 +9,8 @@ BASE_SETTINGS = {
     "SECRET_KEY": "test-secret-key",
     "DATABASE_URL": "postgresql+psycopg://postgres:postgres@localhost:5432/modelpulse_test",
     "REDIS_URL": "redis://localhost:6379/15",
+    "DEBUG": False,
+    "TESTING": False,
 }
 
 
