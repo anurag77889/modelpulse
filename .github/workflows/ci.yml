@@ -23,6 +23,7 @@ jobs:
           --health-timeout=5s
           --health-retries=5
     env:
+      ENVIRONMENT: "test"
       TESTING: "True"
       SECRET_KEY: testsecretkey
       DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/modelpulse_test
