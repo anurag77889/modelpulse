@@ -4,6 +4,31 @@ from pydantic import ValidationError
 from app.config import Settings
 
 
+SETTINGS_ENV_VARS = (
+    "APP_NAME",
+    "ENVIRONMENT",
+    "DEBUG",
+    "TESTING",
+    "SECRET_KEY",
+    "ALGORITHM",
+    "ACCESS_TOKEN_EXPIRE_MINUTES",
+    "DATABASE_URL",
+    "REDIS_URL",
+    "REDIS_CACHE_TTL_SECONDS",
+    "CELERY_BROKER_URL",
+    "CELERY_RESULT_BACKEND",
+    "CELERY_TASK_SERIALIZER",
+    "CELERY_RESULT_SERIALIZER",
+    "CELERY_ACCEPT_CONTENT",
+)
+
+
+@pytest.fixture(autouse=True)
+def isolate_settings_environment(monkeypatch):
+    for variable in SETTINGS_ENV_VARS:
+        monkeypatch.delenv(variable, raising=False)
+
+
 BASE_SETTINGS = {
     "ENVIRONMENT": "test",
     "SECRET_KEY": "test-secret-key",
