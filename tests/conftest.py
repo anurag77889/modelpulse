@@ -16,6 +16,9 @@ env_file = Path(".env.test")
 if env_file.exists():
     load_dotenv(".env.test", override=True)
 
+# Configuration validation requires an explicit environment.
+os.environ.setdefault("ENVIRONMENT", "test")
+
 from app.config import settings
 
 print(settings.DATABASE_URL)
