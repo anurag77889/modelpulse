@@ -77,6 +77,18 @@ def test_production_rejects_debug():
         Settings(**config)
 
 
+def test_production_rejects_testing():
+    config = {
+        **BASE_SETTINGS,
+        "ENVIRONMENT": "production",
+        "CELERY_BROKER_URL": "redis://localhost:6379/0",
+        "TESTING": True,
+    }
+
+    with pytest.raises(ValidationError, match="TESTING"):
+        Settings(**config)
+
+
 def test_valid_production_settings():
     config = {
         **BASE_SETTINGS,
@@ -88,3 +100,4 @@ def test_valid_production_settings():
 
     assert settings.ENVIRONMENT == "production"
     assert settings.DEBUG is False
+    assert settings.TESTING is False
