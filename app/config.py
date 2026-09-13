@@ -39,6 +39,8 @@ class Settings(BaseSettings):
         if self.ENVIRONMENT == "production":
             if self.DEBUG:
                 raise ValueError("DEBUG must be False in production")
+            if self.TESTING:
+                raise ValueError("TESTING must be False in production")
             if not self.CELERY_BROKER_URL.strip():
                 raise ValueError("CELERY_BROKER_URL is required in production")
 
