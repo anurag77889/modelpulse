@@ -39,8 +39,12 @@ BASE_SETTINGS = {
 }
 
 
+def make_settings(**values):
+    return Settings(_env_file=None, **values)
+
+
 def test_valid_test_settings():
-    settings = Settings(**BASE_SETTINGS)
+    settings = make_settings(**BASE_SETTINGS)
 
     assert settings.ENVIRONMENT == "test"
     assert settings.DEBUG is False
@@ -52,7 +56,7 @@ def test_missing_secret_key_fails():
     config.pop("SECRET_KEY")
 
     with pytest.raises(ValidationError):
-        Settings(**config)
+        make_settings(**config)
 
 
 def test_missing_database_url_fails():
@@ -60,7 +64,7 @@ def test_missing_database_url_fails():
     config.pop("DATABASE_URL")
 
     with pytest.raises(ValidationError):
-        Settings(**config)
+        make_settings(**config)
 
 
 def test_missing_redis_url_fails():
@@ -68,28 +72,28 @@ def test_missing_redis_url_fails():
     config.pop("REDIS_URL")
 
     with pytest.raises(ValidationError):
-        Settings(**config)
+        make_settings(**config)
 
 
 def test_empty_secret_key_fails():
     config = {**BASE_SETTINGS, "SECRET_KEY": "   "}
 
     with pytest.raises(ValidationError):
-        Settings(**config)
+        make_settings(**config)
 
 
 def test_invalid_environment_fails():
     config = {**BASE_SETTINGS, "ENVIRONMENT": "staging"}
 
     with pytest.raises(ValidationError):
-        Settings(**config)
+        make_settings(**config)
 
 
 def test_production_requires_celery_broker():
     config = {**BASE_SETTINGS, "ENVIRONMENT": "production"}
 
     with pytest.raises(ValidationError, match="CELERY_BROKER_URL"):
-        Settings(**config)
+        make_settings(**config)
 
 
 def test_production_rejects_debug():
@@ -101,7 +105,7 @@ def test_production_rejects_debug():
     }
 
     with pytest.raises(ValidationError, match="DEBUG"):
-        Settings(**config)
+        make_settings(**config)
 
 
 def test_production_rejects_testing():
@@ -113,7 +117,7 @@ def test_production_rejects_testing():
     }
 
     with pytest.raises(ValidationError, match="TESTING"):
-        Settings(**config)
+        make_settings(**config)
 
 
 def test_valid_production_settings():
@@ -123,7 +127,7 @@ def test_valid_production_settings():
         "CELERY_BROKER_URL": "redis://localhost:6379/0",
     }
 
-    settings = Settings(**config)
+    settings = make_settings(**config)
 
     assert settings.ENVIRONMENT == "production"
     assert settings.DEBUG is False
