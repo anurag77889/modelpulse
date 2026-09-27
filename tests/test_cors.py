@@ -36,5 +36,5 @@ def test_cors_allows_configured_origin_on_simple_request(client: TestClient):
         headers={"Origin": "http://localhost:5173"},
     )
 
-    assert response.status_code == 401
+    assert response.status_code == 403
     assert response.headers["access-control-allow-origin"] == "http://localhost:5173"
