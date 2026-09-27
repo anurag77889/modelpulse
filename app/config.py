@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     REDIS_URL: str
     REDIS_CACHE_TTL_SECONDS: int = 300
+    CORS_ORIGINS: list[str] = []
     CELERY_BROKER_URL: str = ""
     CELERY_RESULT_BACKEND: str = ""
     CELERY_TASK_SERIALIZER: str = "json"
@@ -34,8 +35,26 @@ class Settings(BaseSettings):
             raise ValueError("value must not be empty")
         return value
 
+    @field_validator("CORS_ORIGINS", mode="before")
+    @classmethod
+    def parse_cors_origins(cls, value):
+        if value is None:
+            return []
+        if isinstance(value, str):
+            return [origin.strip().rstrip("/") for origin in value.split(",") if origin.strip()]
+        return value
+
     @model_validator(mode="after")
     def validate_environment(self):
+        if self.ENVIRONMENT in {"development", "test"} and not self.CORS_ORIGINS:
+            self.CORS_ORIGINS = [
+                "http://localhost:3000",
+                "http://localhost:5173",
+            ]
+
+        if "*" in self.CORS_ORIGINS:
+            raise ValueError("CORS_ORIGINS must not contain '*' wildcard")
+
         if self.ENVIRONMENT == "production":
             if self.DEBUG:
                 raise ValueError("DEBUG must be False in production")
@@ -43,6 +62,8 @@ class Settings(BaseSettings):
                 raise ValueError("TESTING must be False in production")
             if not self.CELERY_BROKER_URL.strip():
                 raise ValueError("CELERY_BROKER_URL is required in production")
+            if not self.CORS_ORIGINS:
+                raise ValueError("CORS_ORIGINS is required in production")
 
         return self
 
