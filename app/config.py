@@ -1,7 +1,7 @@
-from typing import Annotated, Literal
+from typing import Literal
 
 from pydantic import Field, field_validator, model_validator
-from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     REDIS_URL: str
     REDIS_CACHE_TTL_SECONDS: int = 300
-    CORS_ORIGINS: Annotated[list[str], NoDecode] = Field(default_factory=list)
+    CORS_ORIGINS: list[str] = Field(default_factory=list)
     CELERY_BROKER_URL: str = ""
     CELERY_RESULT_BACKEND: str = ""
     CELERY_TASK_SERIALIZER: str = "json"
@@ -33,19 +33,6 @@ class Settings(BaseSettings):
     def validate_required_string(cls, value: str) -> str:
         if not value.strip():
             raise ValueError("value must not be empty")
-        return value
-
-    @field_validator("CORS_ORIGINS", mode="before")
-    @classmethod
-    def parse_cors_origins(cls, value):
-        if value is None:
-            return []
-        if isinstance(value, str):
-            return [
-                origin.strip().rstrip("/")
-                for origin in value.split(",")
-                if origin.strip()
-            ]
         return value
 
     @model_validator(mode="after")
