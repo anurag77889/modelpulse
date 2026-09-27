@@ -146,7 +146,7 @@ def test_production_rejects_cors_wildcard():
         **BASE_SETTINGS,
         "ENVIRONMENT": "production",
         "CELERY_BROKER_URL": "redis://localhost:6379/0",
-        "CORS_ORIGINS": "*",
+        "CORS_ORIGINS": ["*"],
     }
 
     with pytest.raises(ValidationError, match="wildcard"):
@@ -158,7 +158,7 @@ def test_production_rejects_debug():
         **BASE_SETTINGS,
         "ENVIRONMENT": "production",
         "CELERY_BROKER_URL": "redis://localhost:6379/0",
-        "CORS_ORIGINS": "https://app.example.com",
+        "CORS_ORIGINS": ["https://app.example.com"],
         "DEBUG": True,
     }
 
