@@ -32,7 +32,7 @@ def test_cors_rejects_unconfigured_origin(client: TestClient):
 
 def test_cors_allows_configured_origin_on_simple_request(client: TestClient):
     response = client.get(
-        "/health",
+        "/",
         headers={"Origin": "http://localhost:5173"},
     )
 
