@@ -32,9 +32,9 @@ def test_cors_rejects_unconfigured_origin(client: TestClient):
 
 def test_cors_allows_configured_origin_on_simple_request(client: TestClient):
     response = client.get(
-        "/",
+        "/auth/me",
         headers={"Origin": "http://localhost:5173"},
     )
 
-    assert response.status_code == 200
+    assert response.status_code == 401
     assert response.headers["access-control-allow-origin"] == "http://localhost:5173"
