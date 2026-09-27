@@ -51,17 +51,10 @@ def get_application() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # Tighten CORS in production — only allow your frontend origin
-    origins = ["*"] if settings.DEBUG else [
-        # Add your frontend URL here e.g:
-        # "https://your-frontend.vercel.app",
-        "*"  # change this once you have a frontend URL
-    ]
-
     application.add_middleware(
         CORSMiddleware,
-        allow_origins=origins,
-        allow_credentials=True,
+        allow_origins=settings.CORS_ORIGINS,
+        allow_credentials=False,
         allow_methods=["*"],
         allow_headers=["*"],
     )
