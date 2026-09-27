@@ -1,7 +1,7 @@
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import Field, field_validator, model_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     REDIS_URL: str
     REDIS_CACHE_TTL_SECONDS: int = 300
-    CORS_ORIGINS: list[str] = Field(default_factory=list)
+    CORS_ORIGINS: Annotated[list[str], NoDecode] = Field(default_factory=list)
     CELERY_BROKER_URL: str = ""
     CELERY_RESULT_BACKEND: str = ""
     CELERY_TASK_SERIALIZER: str = "json"
