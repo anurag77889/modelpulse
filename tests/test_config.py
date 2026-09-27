@@ -61,10 +61,10 @@ def test_test_settings_use_safe_cors_defaults():
     ]
 
 
-def test_cors_origins_parse_comma_separated_values():
+def test_cors_origins_parse_json_list():
     settings = make_settings(
         **BASE_SETTINGS,
-        CORS_ORIGINS="https://app.example.com/, https://admin.example.com",
+        CORS_ORIGINS=["https://app.example.com", "https://admin.example.com"],
     )
 
     assert settings.CORS_ORIGINS == [
@@ -76,7 +76,7 @@ def test_cors_origins_parse_comma_separated_values():
 def test_cors_origins_parse_from_environment(monkeypatch):
     monkeypatch.setenv(
         "CORS_ORIGINS",
-        "https://app.example.com/, https://admin.example.com",
+        '["https://app.example.com", "https://admin.example.com"]',
     )
 
     settings = Settings(
@@ -88,7 +88,6 @@ def test_cors_origins_parse_from_environment(monkeypatch):
         "https://app.example.com",
         "https://admin.example.com",
     ]
-
 
 def test_missing_secret_key_fails():
     config = {**BASE_SETTINGS}
