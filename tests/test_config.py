@@ -73,6 +73,23 @@ def test_cors_origins_parse_comma_separated_values():
     ]
 
 
+def test_cors_origins_parse_from_environment(monkeypatch):
+    monkeypatch.setenv(
+        "CORS_ORIGINS",
+        "https://app.example.com/, https://admin.example.com",
+    )
+
+    settings = Settings(
+        _env_file=None,
+        **BASE_SETTINGS,
+    )
+
+    assert settings.CORS_ORIGINS == [
+        "https://app.example.com",
+        "https://admin.example.com",
+    ]
+
+
 def test_missing_secret_key_fails():
     config = {**BASE_SETTINGS}
     config.pop("SECRET_KEY")
