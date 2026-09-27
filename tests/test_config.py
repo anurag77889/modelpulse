@@ -15,6 +15,7 @@ SETTINGS_ENV_VARS = (
     "DATABASE_URL",
     "REDIS_URL",
     "REDIS_CACHE_TTL_SECONDS",
+    "CORS_ORIGINS",
     "CELERY_BROKER_URL",
     "CELERY_RESULT_BACKEND",
     "CELERY_TASK_SERIALIZER",
@@ -49,6 +50,27 @@ def test_valid_test_settings():
     assert settings.ENVIRONMENT == "test"
     assert settings.DEBUG is False
     assert settings.TESTING is False
+
+
+def test_test_settings_use_safe_cors_defaults():
+    settings = make_settings(**BASE_SETTINGS)
+
+    assert settings.CORS_ORIGINS == [
+        "http://localhost:3000",
+        "http://localhost:5173",
+    ]
+
+
+def test_cors_origins_parse_comma_separated_values():
+    settings = make_settings(
+        **BASE_SETTINGS,
+        CORS_ORIGINS="https://app.example.com/, https://admin.example.com",
+    )
+
+    assert settings.CORS_ORIGINS == [
+        "https://app.example.com",
+        "https://admin.example.com",
+    ]
 
 
 def test_missing_secret_key_fails():
@@ -96,11 +118,31 @@ def test_production_requires_celery_broker():
         make_settings(**config)
 
 
+def test_production_requires_cors_origins():
+    config = {**BASE_SETTINGS, "ENVIRONMENT": "production", "CELERY_BROKER_URL": "redis://localhost:6379/0"}
+
+    with pytest.raises(ValidationError, match="CORS_ORIGINS"):
+        make_settings(**config)
+
+
+def test_production_rejects_cors_wildcard():
+    config = {
+        **BASE_SETTINGS,
+        "ENVIRONMENT": "production",
+        "CELERY_BROKER_URL": "redis://localhost:6379/0",
+        "CORS_ORIGINS": "*",
+    }
+
+    with pytest.raises(ValidationError, match="wildcard"):
+        make_settings(**config)
+
+
 def test_production_rejects_debug():
     config = {
         **BASE_SETTINGS,
         "ENVIRONMENT": "production",
         "CELERY_BROKER_URL": "redis://localhost:6379/0",
+        "CORS_ORIGINS": "https://app.example.com",
         "DEBUG": True,
     }
 
@@ -113,6 +155,7 @@ def test_production_rejects_testing():
         **BASE_SETTINGS,
         "ENVIRONMENT": "production",
         "CELERY_BROKER_URL": "redis://localhost:6379/0",
+        "CORS_ORIGINS": "https://app.example.com",
         "TESTING": True,
     }
 
@@ -125,6 +168,7 @@ def test_valid_production_settings():
         **BASE_SETTINGS,
         "ENVIRONMENT": "production",
         "CELERY_BROKER_URL": "redis://localhost:6379/0",
+        "CORS_ORIGINS": "https://app.example.com",
     }
 
     settings = make_settings(**config)
@@ -132,3 +176,4 @@ def test_valid_production_settings():
     assert settings.ENVIRONMENT == "production"
     assert settings.DEBUG is False
     assert settings.TESTING is False
+    assert settings.CORS_ORIGINS == ["https://app.example.com"]
