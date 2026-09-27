@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import field_validator, model_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     REDIS_URL: str
     REDIS_CACHE_TTL_SECONDS: int = 300
-    CORS_ORIGINS: list[str] = []
+    CORS_ORIGINS: list[str] = Field(default_factory=list)
     CELERY_BROKER_URL: str = ""
     CELERY_RESULT_BACKEND: str = ""
     CELERY_TASK_SERIALIZER: str = "json"
@@ -41,7 +41,11 @@ class Settings(BaseSettings):
         if value is None:
             return []
         if isinstance(value, str):
-            return [origin.strip().rstrip("/") for origin in value.split(",") if origin.strip()]
+            return [
+                origin.strip().rstrip("/")
+                for origin in value.split(",")
+                if origin.strip()
+            ]
         return value
 
     @model_validator(mode="after")
