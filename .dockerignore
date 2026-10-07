@@ -2,6 +2,10 @@
 .git
 .gitignore
 
+# Virtual Environments
+.venv/
+venv/
+
 # Environment Files (never bake secrets into an image)
 .env
 .env.*
