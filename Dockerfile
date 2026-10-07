@@ -1,41 +1,32 @@
-# ── Stage 1: Base image ───────────────────────────────────────────────────────
+# Base Image
 FROM python:3.11-slim
 
-# Set working directory inside container
+# Working directory inside the container
 WORKDIR /app
 
-# Prevents Python from writing .pyc files (keeps image clean)
+# Prevent Python from creating .pyc files
 ENV PYTHONDONTWRITEBYTECODE=1
 
-# Prevents Python from buffering stdout/stderr
-# Critical for seeing logs in real time on Railway/Render
+# Send python logs directly to stdout/stderr
 ENV PYTHONUNBUFFERED=1
 
-# ── Stage 2: Install dependencies ─────────────────────────────────────────────
-# Copy only requirements first — Docker layer caching means
-# this layer is only rebuilt when requirements.txt changes,
-# not on every code change. Big time saver.
+# Copy dependency definition
 COPY requirements.txt .
 
+# Install Python dependencies
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 
-# Create a non-root user
-RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
-
-# ── Stage 3: Copy application code ────────────────────────────────────────────
+# Copy application source code
 COPY . .
 
-# ── Stage 4: Copy application source ─────────────────────────────
+# Create a non-root user
+RUN addgroup --system appgroup \
+    && adduser --system --ingroup appgroup appuser \
+    && chown -R appuser:appgroup /app
 
-# Givent the non-root user ownership of the app directory
-RUN chown -R appuser:appgroup /app
-
-# Switch to non-root user
+# Run the application as the non-root user
 USER appuser
-# ── Stage 5: Expose port and run ──────────────────────────────────────────────
-EXPOSE 8000
 
-# Use 2 workers for production
-# --no-access-log keeps logs clean (Railway/Render add their own)
-CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 2 --no-access-log
+# Start Modelpulse
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
