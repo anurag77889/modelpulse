@@ -10,5 +10,5 @@ celery_app.conf.update(
     task_serializer=settings.CELERY_TASK_SERIALIZER,
     accept_content=settings.CELERY_ACCEPT_CONTENT,
     result_serializer=settings.CELERY_RESULT_SERIALIZER,
-    imports=("app.tasks.test_tasks",),
+    include=("app.tasks.prediction_tasks",),
 )

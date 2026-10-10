@@ -32,6 +32,17 @@ def get_model_by_id(db: Session, model_id: int) -> MLModel:
     return model
 
 
+def get_model_for_user(db: Session, model_id: int, current_user_id: int) -> MLModel:
+    """
+    Fetch a single model by ID and verify the caller owns it.
+    Raises 404 if not found, 403 if owned by another user.
+    """
+    model = get_model_by_id(db, model_id)
+    if model.owner_id != current_user_id:
+        raise ForbiddenException
+    return model
+
+
 def get_models_by_owner(
     db: Session,
     owner_id: int,
@@ -68,10 +79,7 @@ def update_model(
     Only the owner can update their model.
     Only provided fields are updated (PATCH semantics).
     """
-    model = get_model_by_id(db, model_id)
-
-    if model.owner_id != current_user_id:
-        raise ForbiddenException
+    model = get_model_for_user(db, model_id, current_user_id)
 
     # Only update fields that were explicitly provided
     update_data = payload.model_dump(exclude_unset=True)
@@ -89,10 +97,7 @@ def delete_model(db: Session, model_id: int, current_user_id: int) -> None:
     Delete a model and all its predictions/alerts (cascade).
     Only the owner can delete.
     """
-    model = get_model_by_id(db, model_id)
-
-    if model.owner_id != current_user_id:
-        raise ForbiddenException
+    model = get_model_for_user(db, model_id, current_user_id)
 
     db.delete(model)
     db.commit()
@@ -105,10 +110,7 @@ def get_model_summary(db: Session, model_id: int, current_user_id: int) -> dict:
     total predictions, avg confidence, avg latency,
     unresolved alerts, latest drift score.
     """
-    model = get_model_by_id(db, model_id)
-
-    if model.owner_id != current_user_id:
-        raise ForbiddenException
+    model = get_model_for_user(db, model_id, current_user_id)
 
     cache_key = f"model:{model_id}:summary"
 

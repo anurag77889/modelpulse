@@ -14,7 +14,7 @@ from app.schemas.ml_model import (
 from app.services.model_service import (
     create_model,
     delete_model,
-    get_model_by_id,
+    get_model_for_user,
     get_model_summary,
     get_models_by_owner,
     update_model,
@@ -63,8 +63,8 @@ def get_model(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """Get a single model by ID."""
-    model = get_model_by_id(db, model_id)
+    """Get a single model by ID. Only the owner can view it."""
+    model = get_model_for_user(db, model_id, current_user.id)
     return model
 
 

@@ -68,6 +68,33 @@ class TestGetModel:
 
         assert response.status_code == 404
 
+    def test_get_model_forbidden(
+        self,
+        client: TestClient,
+        registered_model: dict,
+    ):
+        # Second user tries to read first user's model
+        client.post(
+            "/auth/register",
+            json={
+                "email": "attacker2@example.com",
+                "username": "attacker2",
+                "password": "password123",
+            },
+        )
+        login = client.post(
+            "/auth/login",
+            json={
+                "email": "attacker2@example.com",
+                "password": "password123",
+            },
+        )
+        attacker_headers = {"Authorization": f"Bearer {login.json()['access_token']}"}
+        model_id = registered_model["id"]
+        response = client.get(f"/models/{model_id}", headers=attacker_headers)
+
+        assert response.status_code == 403
+
 
 class TestListModels:
     def test_list_models_empty(self, client: TestClient, auth_headers: dict):
