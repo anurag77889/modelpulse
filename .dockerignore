@@ -49,7 +49,6 @@ README.md
 # CI
 .github/
 
-# Other deployment configs (only keep what the running app needs)
-fly.toml
+# Deployment configs not needed inside the image
 railway.toml
-render.yaml
+docker-compose.yml
