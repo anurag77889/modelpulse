@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 
 from sqlalchemy import JSON, DateTime, Float, ForeignKey, Integer
@@ -34,7 +34,7 @@ class Prediction(Base):
     latency_ms: Mapped[float] = mapped_column(Float, nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, index=True
+        DateTime(timezone=True), default=lambda: datetime.now(UTC), index=True
     )
 
     # Foreign key
@@ -43,6 +43,4 @@ class Prediction(Base):
     )
 
     # Relationships
-    ml_model: Mapped["MLModel"] = relationship(
-        "MLModel", back_populates="predictions"
-    )
+    ml_model: Mapped["MLModel"] = relationship("MLModel", back_populates="predictions")

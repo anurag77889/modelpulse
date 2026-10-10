@@ -3,7 +3,6 @@ from pydantic import ValidationError
 
 from app.config import Settings
 
-
 SETTINGS_ENV_VARS = (
     "APP_NAME",
     "ENVIRONMENT",
@@ -20,6 +19,7 @@ SETTINGS_ENV_VARS = (
     "CELERY_TASK_SERIALIZER",
     "CELERY_RESULT_SERIALIZER",
     "CELERY_ACCEPT_CONTENT",
+    "CORS_ORIGINS",
 )
 
 
@@ -32,7 +32,9 @@ def isolate_settings_environment(monkeypatch):
 BASE_SETTINGS = {
     "ENVIRONMENT": "test",
     "SECRET_KEY": "test-secret-key",
-    "DATABASE_URL": "postgresql+psycopg://postgres:postgres@localhost:5432/modelpulse_test",
+    "DATABASE_URL": (
+        "postgresql+psycopg://postgres:postgres@localhost:5432/modelpulse_test"
+    ),
     "REDIS_URL": "redis://localhost:6379/15",
     "DEBUG": False,
     "TESTING": False,
@@ -132,3 +134,28 @@ def test_valid_production_settings():
     assert settings.ENVIRONMENT == "production"
     assert settings.DEBUG is False
     assert settings.TESTING is False
+
+
+def test_production_rejects_wildcard_cors():
+    config = {
+        **BASE_SETTINGS,
+        "ENVIRONMENT": "production",
+        "CELERY_BROKER_URL": "redis://localhost:6379/0",
+        "CORS_ORIGINS": ["*"],
+    }
+
+    with pytest.raises(ValidationError, match="CORS_ORIGINS"):
+        make_settings(**config)
+
+
+def test_production_allows_explicit_cors_origins():
+    config = {
+        **BASE_SETTINGS,
+        "ENVIRONMENT": "production",
+        "CELERY_BROKER_URL": "redis://localhost:6379/0",
+        "CORS_ORIGINS": ["https://app.example.com"],
+    }
+
+    settings = make_settings(**config)
+
+    assert settings.CORS_ORIGINS == ["https://app.example.com"]

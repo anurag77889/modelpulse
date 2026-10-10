@@ -7,11 +7,19 @@ from sqlalchemy.orm import Session
 from app.core.dependencies import get_current_user
 from app.database import get_db
 from app.models.user import User
-from app.schemas.alert import (AlertListResponse, AlertResponse, AlertStats,
-                               BulkResolveResponse)
-from app.services.alert_service import (get_alert_by_id, get_alert_stats,
-                                        get_alerts, resolve_alert,
-                                        resolve_all_alerts)
+from app.schemas.alert import (
+    AlertListResponse,
+    AlertResponse,
+    AlertStats,
+    BulkResolveResponse,
+)
+from app.services.alert_service import (
+    get_alert_by_id,
+    get_alert_stats,
+    get_alerts,
+    resolve_alert,
+    resolve_all_alerts,
+)
 
 router = APIRouter(
     prefix="/models/{model_id}/alerts",
@@ -27,15 +35,13 @@ def list_alerts_route(
     severity: Optional[str] = Query(
         default=None,
         pattern="^(low|medium|high|critical)$",
-        description="Filter by severity level"
+        description="Filter by severity level",
     ),
     alert_type: Optional[str] = Query(
-        default=None,
-        description="Filter by type e.g. drift_detected, low_confidence"
+        default=None, description="Filter by type e.g. drift_detected, low_confidence"
     ),
     is_resolved: Optional[bool] = Query(
-        default=None,
-        description="true = resolved only, false = unresolved only"
+        default=None, description="true = resolved only, false = unresolved only"
     ),
     start_date: Optional[datetime] = Query(default=None),
     end_date: Optional[datetime] = Query(default=None),

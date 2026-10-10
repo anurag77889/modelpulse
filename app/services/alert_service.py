@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 
 from sqlalchemy import func
 from sqlalchemy.orm import Session
@@ -7,15 +7,12 @@ from sqlalchemy.orm import Session
 from app.core.exceptions import ForbiddenException, NotFoundException
 from app.models.alert import Alert
 from app.models.ml_model import MLModel
-
 from app.utils.cache import invalidate_model_summary_cache
 
 logger = logging.getLogger(__name__)
 
 
-def _assert_model_ownership(db: Session,
-                            model_id: int,
-                            user_id: int) -> MLModel:
+def _assert_model_ownership(db: Session, model_id: int, user_id: int) -> MLModel:
     """
     Verify the model exists and belongs to the user.
     Returns the model if valid, raises otherwise.
@@ -54,7 +51,7 @@ def get_alerts(
         query = query.filter(Alert.alert_type == alert_type)
 
     if is_resolved is True:
-        query = query.filter(Alert.is_resolved == True)   # noqa: E712
+        query = query.filter(Alert.is_resolved == True)  # noqa: E712
 
     if is_resolved is False:
         query = query.filter(Alert.is_resolved == False)  # noqa: E712
@@ -66,13 +63,7 @@ def get_alerts(
         query = query.filter(Alert.created_at <= end_date)
 
     total = query.count()
-    alerts = (
-        query
-        .order_by(Alert.created_at.desc())
-        .offset(skip)
-        .limit(limit)
-        .all()
-    )
+    alerts = query.order_by(Alert.created_at.desc()).offset(skip).limit(limit).all()
     return alerts, total
 
 
@@ -85,10 +76,14 @@ def get_alert_by_id(
     """Fetch a single alert by ID. Verifies ownership."""
     _assert_model_ownership(db, model_id, current_user_id)
 
-    alert = db.query(Alert).filter(
-        Alert.id == alert_id,
-        Alert.ml_model_id == model_id,
-    ).first()
+    alert = (
+        db.query(Alert)
+        .filter(
+            Alert.id == alert_id,
+            Alert.ml_model_id == model_id,
+        )
+        .first()
+    )
 
     if not alert:
         raise NotFoundException
@@ -139,22 +134,25 @@ def resolve_all_alerts(
     _assert_model_ownership(db, model_id, current_user_id)
 
     now = datetime.now(UTC)
-    updated = db.query(Alert).filter(
-        Alert.ml_model_id == model_id,
-        Alert.is_resolved == False,  # noqa: E712
-    ).all()
-
-    count = len(updated)
-    for alert in updated:
-        alert.is_resolved = True
-        alert.resolved_at = now
+    updated = (
+        db.query(Alert)
+        .filter(
+            Alert.ml_model_id == model_id,
+            Alert.is_resolved.is_(False),
+        )
+        .update(
+            {"is_resolved": True, "resolved_at": now},
+            synchronize_session=False,
+        )
+    )
 
     db.commit()
+    invalidate_model_summary_cache(model_id)
 
     logger.info(
-        f"[AlertService] Bulk resolved {count} alerts for model_id={model_id}"
+        f"[AlertService] Bulk resolved {updated} alerts for model_id={model_id}"
     )
-    return count
+    return updated
 
 
 def get_alert_stats(
@@ -174,9 +172,8 @@ def get_alert_stats(
 
     # Total and resolved counts
     total_alerts: int = int(
-        db.query(func.count(Alert.id))
-        .filter(Alert.ml_model_id == model_id)
-        .scalar() or 0
+        db.query(func.count(Alert.id)).filter(Alert.ml_model_id == model_id).scalar()
+        or 0
     )
     unresolved_alerts: int = int(
         db.query(func.count(Alert.id))

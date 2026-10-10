@@ -1,15 +1,7 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import (
-    Boolean,
-    DateTime,
-    Float,
-    ForeignKey,
-    Integer,
-    String,
-    Text,
-)
+from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -24,9 +16,7 @@ class Alert(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
 
     # e.g. "drift_detected", "low_confidence", "high_latency"
-    alert_type: Mapped[str] = mapped_column(
-        String(100), nullable=False, index=True
-    )
+    alert_type: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
 
     # Human-readable message
     message: Mapped[str] = mapped_column(Text, nullable=False)
@@ -41,9 +31,11 @@ class Alert(Base):
     is_resolved: Mapped[bool] = mapped_column(Boolean, default=False)
 
     created_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, index=True
+        DateTime(timezone=True), default=lambda: datetime.now(UTC), index=True
     )
-    resolved_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
+    resolved_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
 
     # Foreign key
     ml_model_id: Mapped[int] = mapped_column(
@@ -51,6 +43,4 @@ class Alert(Base):
     )
 
     # Relationships
-    ml_model: Mapped["MLModel"] = relationship(
-        "MLModel", back_populates="alerts"
-    )
+    ml_model: Mapped["MLModel"] = relationship("MLModel", back_populates="alerts")
