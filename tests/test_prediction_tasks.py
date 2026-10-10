@@ -51,3 +51,20 @@ class TestPredictionTask:
         )
 
         db.close.assert_called_once()
+
+
+class TestCeleryWorkerBoot:
+
+    def test_worker_can_import_all_task_modules(self):
+        """
+        Mirrors worker startup (loader.import_default_modules).
+        A stale/missing module here crashes every worker boot.
+        """
+        from app.core.celery import celery_app
+
+        imported = celery_app.loader.import_default_modules()
+
+        assert any(
+            module.__name__ == "app.tasks.prediction_tasks" for module in imported
+        )
+        assert "process_prediction" in celery_app.tasks
