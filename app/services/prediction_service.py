@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 
 from sqlalchemy import and_, func
@@ -8,6 +9,8 @@ from app.models.ml_model import MLModel
 from app.models.prediction import Prediction
 from app.schemas.prediction import PredictionCreate, PredictionUpdate
 from app.services.model_service import get_model_by_id
+
+logger = logging.getLogger(__name__)
 
 
 def _assert_model_ownership(model: MLModel, user_id: int) -> None:
@@ -43,18 +46,29 @@ def log_prediction(
     db.commit()
     db.refresh(prediction)
 
+    # Invalidate immediately so the dashboard summary is never stale,
+    # even if the background worker is slow or the broker is down.
+    from app.utils.cache import invalidate_model_summary_cache
+
+    invalidate_model_summary_cache(model_id)
+
     from app.tasks.prediction_tasks import process_prediction_task
-    process_prediction_task.delay(prediction.id)
+
+    try:
+        process_prediction_task.delay(prediction.id)
+    except Exception:
+        # The prediction is already committed — don't fail the request
+        # because the broker is unavailable.
+        logger.exception(
+            "Failed to enqueue post-processing for prediction %s",
+            prediction.id,
+        )
 
     return prediction
 
 
 def get_prediction(db: Session, prediction_id: int) -> Prediction | None:
-    return (
-        db.query(Prediction)
-        .filter(Prediction.id == prediction_id)
-        .first()
-    )
+    return db.query(Prediction).filter(Prediction.id == prediction_id).first()
 
 
 def get_predictions(
@@ -94,8 +108,8 @@ def get_predictions(
 
     if has_drift is False:
         filters.append(
-            (Prediction.drift_score == None) |  # noqa: E711
-            (Prediction.drift_score <= model.drift_threshold)
+            (Prediction.drift_score == None)  # noqa: E711
+            | (Prediction.drift_score <= model.drift_threshold)
         )
 
     if labelled is True:
@@ -115,10 +129,7 @@ def get_predictions(
 
     total = query.count()
     predictions = (
-        query.order_by(Prediction.created_at.desc())
-        .offset(skip)
-        .limit(limit)
-        .all()
+        query.order_by(Prediction.created_at.desc()).offset(skip).limit(limit).all()
     )
     return predictions, total
 
@@ -133,10 +144,14 @@ def get_prediction_by_id(
     model = get_model_by_id(db, model_id)
     _assert_model_ownership(model, current_user_id)
 
-    prediction = db.query(Prediction).filter(
-        Prediction.id == prediction_id,
-        Prediction.ml_model_id == model_id,
-    ).first()
+    prediction = (
+        db.query(Prediction)
+        .filter(
+            Prediction.id == prediction_id,
+            Prediction.ml_model_id == model_id,
+        )
+        .first()
+    )
 
     if not prediction:
         raise NotFoundException
@@ -156,9 +171,7 @@ def label_prediction(
     This is a PATCH — only actual_output is updated.
     Used after real-world outcomes are known.
     """
-    prediction = get_prediction_by_id(
-        db, model_id, prediction_id, current_user_id
-    )
+    prediction = get_prediction_by_id(db, model_id, prediction_id, current_user_id)
     prediction.actual_output = payload.actual_output
     db.commit()
     db.refresh(prediction)
@@ -177,26 +190,38 @@ def get_prediction_stats(
     model = get_model_by_id(db, model_id)
     _assert_model_ownership(model, current_user_id)
 
-    stats = db.query(
-        func.count(Prediction.id).label("total"),
-        func.avg(Prediction.confidence_score).label("avg_confidence"),
-        func.min(Prediction.confidence_score).label("min_confidence"),
-        func.max(Prediction.confidence_score).label("max_confidence"),
-        func.avg(Prediction.latency_ms).label("avg_latency_ms"),
-        func.max(Prediction.latency_ms).label("max_latency_ms"),
-        func.avg(Prediction.drift_score).label("avg_drift_score"),
-        func.max(Prediction.drift_score).label("max_drift_score"),
-    ).filter(Prediction.ml_model_id == model_id).one()
+    stats = (
+        db.query(
+            func.count(Prediction.id).label("total"),
+            func.avg(Prediction.confidence_score).label("avg_confidence"),
+            func.min(Prediction.confidence_score).label("min_confidence"),
+            func.max(Prediction.confidence_score).label("max_confidence"),
+            func.avg(Prediction.latency_ms).label("avg_latency_ms"),
+            func.max(Prediction.latency_ms).label("max_latency_ms"),
+            func.avg(Prediction.drift_score).label("avg_drift_score"),
+            func.max(Prediction.drift_score).label("max_drift_score"),
+        )
+        .filter(Prediction.ml_model_id == model_id)
+        .one()
+    )
 
-    labelled_count = db.query(func.count(Prediction.id)).filter(
-        Prediction.ml_model_id == model_id,
-        Prediction.actual_output != None,  # noqa: E711
-    ).scalar()
+    labelled_count = (
+        db.query(func.count(Prediction.id))
+        .filter(
+            Prediction.ml_model_id == model_id,
+            Prediction.actual_output != None,  # noqa: E711
+        )
+        .scalar()
+    )
 
-    drifted_count = db.query(func.count(Prediction.id)).filter(
-        Prediction.ml_model_id == model_id,
-        Prediction.drift_score > model.drift_threshold,
-    ).scalar()
+    drifted_count = (
+        db.query(func.count(Prediction.id))
+        .filter(
+            Prediction.ml_model_id == model_id,
+            Prediction.drift_score > model.drift_threshold,
+        )
+        .scalar()
+    )
 
     return {
         "model_id": model_id,
