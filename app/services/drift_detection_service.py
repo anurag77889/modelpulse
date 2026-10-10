@@ -43,22 +43,22 @@ def _get_baseline_stats(
 
     This is our reference distribution for drift comparison.
     """
-    result = (
-        db.query(
-            func.avg(Prediction.confidence_score).label("mean"),
-            func.avg(Prediction.confidence_score * Prediction.confidence_score).label(
-                "mean_sq"
-            ),
-        )
+    recent = (
+        db.query(Prediction.confidence_score.label("confidence"))
         .filter(
             Prediction.ml_model_id == model_id,
             Prediction.id != exclude_prediction_id,
-            Prediction.confidence_score != None,  # noqa: E711
+            Prediction.confidence_score.is_not(None),
         )
         .order_by(Prediction.created_at.desc())
         .limit(window)
-        .one()
+        .subquery()
     )
+
+    result = db.query(
+        func.avg(recent.c.confidence).label("mean"),
+        func.avg(recent.c.confidence * recent.c.confidence).label("mean_sq"),
+    ).one()
 
     mean = result.mean or 0.0
     mean_sq = result.mean_sq or 0.0
@@ -144,7 +144,7 @@ def run_drift_detection(
             .filter(
                 Prediction.ml_model_id == model_id,
                 Prediction.id != prediction_id,
-                Prediction.confidence_score != None,  # noqa: E711
+                Prediction.confidence_score.is_not(None),
             )
             .scalar()
         )
@@ -180,6 +180,7 @@ def run_drift_detection(
         if drift_score > model.drift_threshold:
             _create_drift_alert(db, model, prediction_id, drift_score)
 
-    except Exception as e:
-        logger.error(f"[DriftDetector] Failed for prediction {prediction_id}: {e}")
+    except Exception:
         db.rollback()
+        logger.exception(f"[DriftDetector] Failed for prediction {prediction_id}")
+        raise
