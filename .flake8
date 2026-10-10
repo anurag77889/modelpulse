@@ -1,3 +1,6 @@
 [flake8]
-exclude = .venv,venv,__pycache__
 max-line-length = 88
+exclude = .venv,venv,node_modules,data,.pytest_cache,__pycache__,build,dist
+per-file-ignores =
+    # Settings must be imported after .env.test is loaded
+    tests/conftest.py: E402
