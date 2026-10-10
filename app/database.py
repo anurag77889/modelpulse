@@ -23,6 +23,7 @@ SessionLocal = sessionmaker(
 
 class Base(DeclarativeBase):
     """All ORM models will inherit from this."""
+
     pass
 
 

@@ -6,15 +6,16 @@ from pydantic import BaseModel, Field
 
 class PredictionCreate(BaseModel):
     """Log a new prediction."""
+
     input_data: dict[str, Any] = Field(
         ...,
         description="Feature inputs sent to the model",
-        examples=[{"age": 34, "tenure_months": 12, "monthly_charge": 65.5}]
+        examples=[{"age": 34, "tenure_months": 12, "monthly_charge": 65.5}],
     )
     prediction_output: dict[str, Any] = Field(
         ...,
         description="Model output/prediction",
-        examples=[{"label": "churn", "probability": 0.87}]
+        examples=[{"label": "churn", "probability": 0.87}],
     )
     confidence_score: Optional[float] = Field(None, ge=0.0, le=1.0)
     latency_ms: Optional[float] = Field(None, ge=0.0)
@@ -22,10 +23,8 @@ class PredictionCreate(BaseModel):
 
 class PredictionUpdate(BaseModel):
     """Attach ground truth label to an existing prediction."""
-    actual_output: dict[str, Any] = Field(
-        ...,
-        examples=[{"label": "churn"}]
-    )
+
+    actual_output: dict[str, Any] = Field(..., examples=[{"label": "churn"}])
 
 
 class PredictionResponse(BaseModel):
@@ -44,6 +43,7 @@ class PredictionResponse(BaseModel):
 
 class PredictionListResponse(BaseModel):
     """Paginated prediction list."""
+
     items: list[PredictionResponse]
     total: int
     skip: int
@@ -52,6 +52,7 @@ class PredictionListResponse(BaseModel):
 
 class PredictionStats(BaseModel):
     """Aggregated stats across all predictions for a model."""
+
     model_id: int
     total_predictions: int
     labelled_predictions: int

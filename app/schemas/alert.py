@@ -6,11 +6,10 @@ from pydantic import BaseModel, Field
 
 class AlertCreate(BaseModel):
     """Used internally by background tasks."""
+
     alert_type: str
     message: str
-    severity: str = Field(
-        default="medium", pattern="^(low|medium|high|critical)$"
-    )
+    severity: str = Field(default="medium", pattern="^(low|medium|high|critical)$")
     triggered_value: Optional[float] = None
     ml_model_id: int
 
@@ -31,6 +30,7 @@ class AlertResponse(BaseModel):
 
 class AlertListResponse(BaseModel):
     """Paginated alert list."""
+
     items: list[AlertResponse]
     total: int
     skip: int
@@ -39,6 +39,7 @@ class AlertListResponse(BaseModel):
 
 class AlertStats(BaseModel):
     """Alert counts broken down by severity and type."""
+
     model_id: int
     total_alerts: int
     unresolved_alerts: int
@@ -49,5 +50,6 @@ class AlertStats(BaseModel):
 
 class BulkResolveResponse(BaseModel):
     """Response for bulk resolve operation."""
+
     resolved_count: int
     message: str

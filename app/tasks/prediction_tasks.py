@@ -1,7 +1,7 @@
 from app.core.celery import celery_app
+from app.core.logging import logger
 from app.database import SessionLocal
 from app.services.prediction_processing_service import process_prediction
-from app.core.logging import logger
 
 
 @celery_app.task(

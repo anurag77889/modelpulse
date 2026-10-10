@@ -1,25 +1,21 @@
+import json
+
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.core.exceptions import ForbiddenException, NotFoundException
+from app.core.logging import logger
+from app.core.redis import redis_client
 from app.models.alert import Alert
 from app.models.ml_model import MLModel
 from app.models.prediction import Prediction
 from app.schemas.ml_model import MLModelCreate, MLModelUpdate
-
-from app.core.redis import redis_client
-import json
-from fastapi.encoders import jsonable_encoder
-from app.config import settings
-
-from app.core.logging import logger
-
 from app.utils.cache import invalidate_model_summary_cache
 
 
-def create_model(
-    db: Session, payload: MLModelCreate, owner_id: int
-) -> MLModel:
+def create_model(db: Session, payload: MLModelCreate, owner_id: int) -> MLModel:
     """Register a new ML model under the authenticated user."""
     model = MLModel(**payload.model_dump(), owner_id=owner_id)
     db.add(model)
@@ -57,12 +53,7 @@ def get_models_by_owner(
         query = query.filter(MLModel.model_type == model_type)
 
     total = query.count()
-    models = (
-        query.order_by(MLModel.created_at.desc())
-        .offset(skip)
-        .limit(limit)
-        .all()
-    )
+    models = query.order_by(MLModel.created_at.desc()).offset(skip).limit(limit).all()
     return models, total
 
 
@@ -108,9 +99,7 @@ def delete_model(db: Session, model_id: int, current_user_id: int) -> None:
     invalidate_model_summary_cache(model_id)
 
 
-def get_model_summary(
-    db: Session, model_id: int, current_user_id: int
-) -> dict:
+def get_model_summary(db: Session, model_id: int, current_user_id: int) -> dict:
     """
     Returns a stats summary for a model:
     total predictions, avg confidence, avg latency,
@@ -135,17 +124,25 @@ def get_model_summary(
 
     logger.info("Cache miss for model summary.")
 
-    stats = db.query(
-        func.count(Prediction.id).label("total_predictions"),
-        func.avg(Prediction.confidence_score).label("avg_confidence"),
-        func.avg(Prediction.latency_ms).label("avg_latency_ms"),
-        func.avg(Prediction.drift_score).label("avg_drift_score"),
-    ).filter(Prediction.ml_model_id == model_id).one()
+    stats = (
+        db.query(
+            func.count(Prediction.id).label("total_predictions"),
+            func.avg(Prediction.confidence_score).label("avg_confidence"),
+            func.avg(Prediction.latency_ms).label("avg_latency_ms"),
+            func.avg(Prediction.drift_score).label("avg_drift_score"),
+        )
+        .filter(Prediction.ml_model_id == model_id)
+        .one()
+    )
 
-    unresolved_alerts = db.query(func.count(Alert.id)).filter(
-        Alert.ml_model_id == model_id,
-        Alert.is_resolved == False,  # noqa: E712
-    ).scalar()
+    unresolved_alerts = (
+        db.query(func.count(Alert.id))
+        .filter(
+            Alert.ml_model_id == model_id,
+            Alert.is_resolved == False,  # noqa: E712
+        )
+        .scalar()
+    )
 
     latest_prediction = (
         db.query(Prediction)

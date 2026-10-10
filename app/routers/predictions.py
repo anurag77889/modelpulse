@@ -7,13 +7,20 @@ from sqlalchemy.orm import Session
 from app.core.dependencies import get_current_user
 from app.database import get_db
 from app.models.user import User
-from app.schemas.prediction import (PredictionCreate, PredictionListResponse,
-                                    PredictionResponse, PredictionStats,
-                                    PredictionUpdate)
-from app.services.prediction_service import (get_prediction_by_id,
-                                             get_prediction_stats,
-                                             get_predictions, label_prediction,
-                                             log_prediction)
+from app.schemas.prediction import (
+    PredictionCreate,
+    PredictionListResponse,
+    PredictionResponse,
+    PredictionStats,
+    PredictionUpdate,
+)
+from app.services.prediction_service import (
+    get_prediction_by_id,
+    get_prediction_stats,
+    get_predictions,
+    label_prediction,
+    log_prediction,
+)
 
 router = APIRouter(
     prefix="/models/{model_id}/predictions",
@@ -114,6 +121,4 @@ def label_prediction_route(
     Attach a ground truth label to an existing prediction.
     Call this when real-world outcomes become known.
     """
-    return label_prediction(
-        db, model_id, prediction_id, payload, current_user.id
-    )
+    return label_prediction(db, model_id, prediction_id, payload, current_user.id)

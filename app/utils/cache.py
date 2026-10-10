@@ -1,7 +1,7 @@
 from redis.exceptions import RedisError
 
-from app.core.redis import redis_client
 from app.core.logging import logger
+from app.core.redis import redis_client
 
 
 def invalidate_model_summary_cache(model_id: int) -> None:

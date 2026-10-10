@@ -2,8 +2,8 @@ from sqlalchemy.orm import Session
 
 from app.core.logging import logger
 from app.services.drift_detection_service import run_drift_detection
-from app.utils.cache import invalidate_model_summary_cache
 from app.services.prediction_service import get_prediction
+from app.utils.cache import invalidate_model_summary_cache
 
 
 def process_prediction(db: Session, prediction_id: int):

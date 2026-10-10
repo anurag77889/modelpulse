@@ -45,5 +45,6 @@ def get_current_active_superuser(
     """
     if not current_user.is_superuser:
         from app.core.exceptions import ForbiddenException
+
         raise ForbiddenException
     return current_user
