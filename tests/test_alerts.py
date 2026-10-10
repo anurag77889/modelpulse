@@ -1,11 +1,10 @@
-import pytest
 from fastapi.testclient import TestClient
 
+from app.core.redis import redis_client
 from app.models.alert import Alert
+from app.utils.cache import model_summary_cache_key
 from tests.conftest import TestingSessionLocal
 
-from app.core.redis import redis_client
-from app.utils.cache import model_summary_cache_key
 
 def _seed_alert(model_id: int, alert_type: str, severity: str) -> None:
     """Directly insert an alert into the test DB — bypasses background tasks."""
@@ -58,9 +57,7 @@ class TestListAlerts:
         assert body["total"] == 2
 
     def test_list_alerts_without_token(
-            self,
-            client: TestClient,
-            registered_model: dict
+        self, client: TestClient, registered_model: dict
     ):
         model_id = registered_model["id"]
         _seed_alert(model_id, "drift_detected", "high")
@@ -133,19 +130,16 @@ class TestResolveAlert:
         assert body["resolved_at"] is not None
 
     def test_resolve_alert_without_token(
-            self,
-            client: TestClient,
-            registered_model: dict,
-            auth_headers: dict,
+        self,
+        client: TestClient,
+        registered_model: dict,
+        auth_headers: dict,
     ):
         model_id = registered_model["id"]
         _seed_alert(model_id, "drift_detected", "high")
 
         # Get the alert ID
-        alerts = client.get(
-            f"/models/{model_id}/alerts/",
-            headers=auth_headers
-        )
+        alerts = client.get(f"/models/{model_id}/alerts/", headers=auth_headers)
         alert_id = alerts.json()["items"][0]["id"]
 
         response = client.patch(
@@ -155,10 +149,7 @@ class TestResolveAlert:
         assert response.status_code == 403
 
     def test_resolve_alert_not_found(
-            self,
-            client: TestClient,
-            registered_model: dict,
-            auth_headers: dict
+        self, client: TestClient, registered_model: dict, auth_headers: dict
     ):
         model_id = registered_model["id"]
         alert_id = 9999999
@@ -171,32 +162,30 @@ class TestResolveAlert:
         assert response.status_code == 404
 
     def test_resolve_alert_forbidden(
-        self,
-        client: TestClient,
-        registered_model: dict,
-        auth_headers: dict
+        self, client: TestClient, registered_model: dict, auth_headers: dict
     ):
         # Second user tries to label first user's prediction
-        client.post("/auth/register", json={
-            "email": "attacker@example.com",
-            "username": "attacker",
-            "password": "password123",
-        })
-        login = client.post("/auth/login", json={
-            "email": "attacker@example.com",
-            "password": "password123",
-        })
-        attacker_headers = {
-            "Authorization": f"Bearer {login.json()['access_token']}"
-        }
+        client.post(
+            "/auth/register",
+            json={
+                "email": "attacker@example.com",
+                "username": "attacker",
+                "password": "password123",
+            },
+        )
+        login = client.post(
+            "/auth/login",
+            json={
+                "email": "attacker@example.com",
+                "password": "password123",
+            },
+        )
+        attacker_headers = {"Authorization": f"Bearer {login.json()['access_token']}"}
         model_id = registered_model["id"]
         _seed_alert(model_id, "drift_detected", "high")
 
         # Get the alert ID
-        alerts = client.get(
-            f"/models/{model_id}/alerts/",
-            headers=auth_headers
-        )
+        alerts = client.get(f"/models/{model_id}/alerts/", headers=auth_headers)
         alert_id = alerts.json()["items"][0]["id"]
 
         response = client.patch(
@@ -291,9 +280,19 @@ class TestBulkResolve:
         auth_headers: dict,
     ):
         model_id = registered_model["id"]
+        cache_key = model_summary_cache_key(model_id)
+
         _seed_alert(model_id, "drift_detected", "high")
         _seed_alert(model_id, "low_confidence", "medium")
         _seed_alert(model_id, "high_latency", "critical")
+
+        # Populate cache before bulk resolving
+        response = client.get(
+            f"/models/{model_id}/summary",
+            headers=auth_headers,
+        )
+        assert response.status_code == 200
+        assert redis_client.exists(cache_key) == 1
 
         response = client.patch(
             f"/models/{model_id}/alerts/resolve-all",
@@ -302,6 +301,9 @@ class TestBulkResolve:
         assert response.status_code == 200
         body = response.json()
         assert body["resolved_count"] == 3
+
+        # Bulk resolve must invalidate the cached summary too
+        assert redis_client.exists(cache_key) == 0
 
         # Confirm all resolved
         alerts = client.get(
@@ -337,17 +339,11 @@ class TestAlertStats:
         assert body["by_type"]["low_confidence"] == 1
 
     def test_alert_stats_empty(
-            self,
-            client: TestClient,
-            registered_model: dict,
-            auth_headers: dict
+        self, client: TestClient, registered_model: dict, auth_headers: dict
     ):
         model_id = registered_model["id"]
 
-        response = client.get(
-            f"/models/{model_id}/alerts/stats",
-            headers=auth_headers
-        )
+        response = client.get(f"/models/{model_id}/alerts/stats", headers=auth_headers)
         body = response.json()
         assert response.status_code == 200
         assert body["total_alerts"] == 0

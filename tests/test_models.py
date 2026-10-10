@@ -1,50 +1,58 @@
-import pytest
 from fastapi.testclient import TestClient
-from app.utils.cache import model_summary_cache_key
+
 from app.core.redis import redis_client
+from app.utils.cache import model_summary_cache_key
 
 
 class TestCreateModel:
-    def test_create_model_success(
-        self, client: TestClient, auth_headers: dict
-    ):
-        response = client.post("/models/", json={
-            "name": "Fraud Detector",
-            "version": "2.0.0",
-            "description": "Detects fraudulent transactions",
-            "model_type": "classification",
-            "drift_threshold": 0.1,
-        }, headers=auth_headers)
+    def test_create_model_success(self, client: TestClient, auth_headers: dict):
+        response = client.post(
+            "/models/",
+            json={
+                "name": "Fraud Detector",
+                "version": "2.0.0",
+                "description": "Detects fraudulent transactions",
+                "model_type": "classification",
+                "drift_threshold": 0.1,
+            },
+            headers=auth_headers,
+        )
         assert response.status_code == 201
         body = response.json()
         assert body["name"] == "Fraud Detector"
         assert body["version"] == "2.0.0"
-        assert body["status"] == "staging"      # default
+        assert body["status"] == "staging"  # default
         assert body["drift_threshold"] == 0.1
 
     def test_create_model_unauthenticated(self, client: TestClient):
-        response = client.post("/models/", json={
-            "name": "No Auth Model",
-            "version": "1.0.0",
-            "model_type": "regression",
-        })
+        response = client.post(
+            "/models/",
+            json={
+                "name": "No Auth Model",
+                "version": "1.0.0",
+                "model_type": "regression",
+            },
+        )
         assert response.status_code == 403
 
     def test_create_model_missing_required_fields(
         self, client: TestClient, auth_headers: dict
     ):
-        response = client.post("/models/", json={
-            "name": "Incomplete Model",
-            # missing version and model_type
-        }, headers=auth_headers)
+        response = client.post(
+            "/models/",
+            json={
+                "name": "Incomplete Model",
+                # missing version and model_type
+            },
+            headers=auth_headers,
+        )
         assert response.status_code == 422
 
 
 class TestGetModel:
     def test_get_model_success(
-            self, client: TestClient,
-            registered_model: dict,
-            auth_headers: dict):
+        self, client: TestClient, registered_model: dict, auth_headers: dict
+    ):
         model_id = registered_model["id"]
         response = client.get(f"/models/{model_id}", headers=auth_headers)
         body = response.json()
@@ -54,9 +62,8 @@ class TestGetModel:
         assert body["version"] == registered_model["version"]
 
     def test_get_model_not_found(
-            self, client: TestClient,
-            registered_model: dict,
-            auth_headers: dict):
+        self, client: TestClient, registered_model: dict, auth_headers: dict
+    ):
         response = client.get("/models/9999999", headers=auth_headers)
 
         assert response.status_code == 404
@@ -77,21 +84,31 @@ class TestListModels:
         auth_headers: dict,
     ):
         # Register a second user and their model
-        client.post("/auth/register", json={
-            "email": "other@example.com",
-            "username": "otheruser",
-            "password": "password123",
-        })
-        login = client.post("/auth/login", json={
-            "email": "other@example.com",
-            "password": "password123",
-        })
+        client.post(
+            "/auth/register",
+            json={
+                "email": "other@example.com",
+                "username": "otheruser",
+                "password": "password123",
+            },
+        )
+        login = client.post(
+            "/auth/login",
+            json={
+                "email": "other@example.com",
+                "password": "password123",
+            },
+        )
         other_headers = {"Authorization": f"Bearer {login.json()['access_token']}"}
-        client.post("/models/", json={
-            "name": "Other User Model",
-            "version": "1.0.0",
-            "model_type": "regression",
-        }, headers=other_headers)
+        client.post(
+            "/models/",
+            json={
+                "name": "Other User Model",
+                "version": "1.0.0",
+                "model_type": "regression",
+            },
+            headers=other_headers,
+        )
 
         # First user should only see their own model
         response = client.get("/models/", headers=auth_headers)
@@ -120,16 +137,18 @@ class TestListModels:
         assert body["total"] == 1
         assert body["items"][0]["status"] == "production"
 
-    def test_list_models_pagination(
-        self, client: TestClient, auth_headers: dict
-    ):
+    def test_list_models_pagination(self, client: TestClient, auth_headers: dict):
         # Create 3 models
         for i in range(3):
-            client.post("/models/", json={
-                "name": f"Model {i}",
-                "version": "1.0.0",
-                "model_type": "classification",
-            }, headers=auth_headers)
+            client.post(
+                "/models/",
+                json={
+                    "name": f"Model {i}",
+                    "version": "1.0.0",
+                    "model_type": "classification",
+                },
+                headers=auth_headers,
+            )
 
         response = client.get("/models/?skip=0&limit=2", headers=auth_headers)
         body = response.json()
@@ -157,25 +176,18 @@ class TestUpdateModel:
         assert body["name"] == registered_model["name"]  # unchanged
 
     def test_update_non_existent_model(
-            self,
-            client: TestClient,
-            registered_model: dict,
-            auth_headers: dict
+        self, client: TestClient, registered_model: dict, auth_headers: dict
     ):
         model_id = 99999999
         response = client.patch(
-            f"/models/{model_id}",
-            headers=auth_headers,
-            json={
-                "status": "production"
-            }
+            f"/models/{model_id}", headers=auth_headers, json={"status": "production"}
         )
         assert response.status_code == 404
 
     def test_update_without_token(
-            self,
-            client: TestClient,
-            registered_model: dict,
+        self,
+        client: TestClient,
+        registered_model: dict,
     ):
         model_id = registered_model["id"]
         response = client.patch(f"/models/{model_id}")
@@ -201,18 +213,22 @@ class TestUpdateModel:
         registered_model: dict,
     ):
         # Second user tries to update first user's model
-        client.post("/auth/register", json={
-            "email": "attacker@example.com",
-            "username": "attacker",
-            "password": "password123",
-        })
-        login = client.post("/auth/login", json={
-            "email": "attacker@example.com",
-            "password": "password123",
-        })
-        attacker_headers = {
-            "Authorization": f"Bearer {login.json()['access_token']}"
-        }
+        client.post(
+            "/auth/register",
+            json={
+                "email": "attacker@example.com",
+                "username": "attacker",
+                "password": "password123",
+            },
+        )
+        login = client.post(
+            "/auth/login",
+            json={
+                "email": "attacker@example.com",
+                "password": "password123",
+            },
+        )
+        attacker_headers = {"Authorization": f"Bearer {login.json()['access_token']}"}
         model_id = registered_model["id"]
         response = client.patch(
             f"/models/{model_id}",
@@ -222,19 +238,16 @@ class TestUpdateModel:
         assert response.status_code == 403
 
     def test_update_model_invalidates_summary_cache(
-            self,
-            client: TestClient,
-            registered_model: dict,
-            auth_headers: dict,
+        self,
+        client: TestClient,
+        registered_model: dict,
+        auth_headers: dict,
     ):
         model_id = registered_model["id"]
         cache_key = model_summary_cache_key(model_id)
 
         # Populate cache
-        response = client.get(
-            f"/models/{model_id}/summary",
-            headers=auth_headers
-        )
+        response = client.get(f"/models/{model_id}/summary", headers=auth_headers)
         assert response.status_code == 200
 
         # Cache should now exist
@@ -242,9 +255,7 @@ class TestUpdateModel:
 
         # Update the model
         response = client.patch(
-            f"/models/{model_id}",
-            json={"name": "Updated Model"},
-            headers=auth_headers
+            f"/models/{model_id}", json={"name": "Updated Model"}, headers=auth_headers
         )
 
         assert response.status_code == 200
@@ -282,10 +293,7 @@ class TestDeleteModel:
         assert get_response.status_code == 404
 
     def test_delete_non_existent_model(
-            self,
-            client: TestClient,
-            registered_model: dict,
-            auth_headers: dict
+        self, client: TestClient, registered_model: dict, auth_headers: dict
     ):
         model_id = 99999999
         response = client.delete(
@@ -295,9 +303,9 @@ class TestDeleteModel:
         assert response.status_code == 404
 
     def test_delete_without_token(
-            self,
-            client: TestClient,
-            registered_model: dict,
+        self,
+        client: TestClient,
+        registered_model: dict,
     ):
         model_id = registered_model["id"]
         response = client.delete(f"/models/{model_id}")
@@ -308,18 +316,22 @@ class TestDeleteModel:
         client: TestClient,
         registered_model: dict,
     ):
-        client.post("/auth/register", json={
-            "email": "attacker@example.com",
-            "username": "attacker",
-            "password": "password123",
-        })
-        login = client.post("/auth/login", json={
-            "email": "attacker@example.com",
-            "password": "password123",
-        })
-        attacker_headers = {
-            "Authorization": f"Bearer {login.json()['access_token']}"
-        }
+        client.post(
+            "/auth/register",
+            json={
+                "email": "attacker@example.com",
+                "username": "attacker",
+                "password": "password123",
+            },
+        )
+        login = client.post(
+            "/auth/login",
+            json={
+                "email": "attacker@example.com",
+                "password": "password123",
+            },
+        )
+        attacker_headers = {"Authorization": f"Bearer {login.json()['access_token']}"}
         model_id = registered_model["id"]
         response = client.delete(
             f"/models/{model_id}",
@@ -337,20 +349,14 @@ class TestDeleteModel:
         cache_key = model_summary_cache_key(model_id)
 
         # Populate cache
-        response = client.get(
-            f"/models/{model_id}/summary",
-            headers=auth_headers
-        )
+        response = client.get(f"/models/{model_id}/summary", headers=auth_headers)
         assert response.status_code == 200
 
         # Cache should now exist
         assert redis_client.exists(cache_key) == 1
 
         # Delete the model
-        response = client.delete(
-            f"/models/{model_id}",
-            headers=auth_headers
-        )
+        response = client.delete(f"/models/{model_id}", headers=auth_headers)
 
         assert response.status_code == 204
 
