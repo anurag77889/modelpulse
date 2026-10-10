@@ -20,6 +20,9 @@ class Settings(BaseSettings):
     CELERY_TASK_SERIALIZER: str = "json"
     CELERY_RESULT_SERIALIZER: str = "json"
     CELERY_ACCEPT_CONTENT: list[str] = ["json"]
+    # Browser origins allowed to call this API, e.g.
+    # CORS_ORIGINS=["https://app.example.com"]
+    CORS_ORIGINS: list[str] = []
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -43,6 +46,8 @@ class Settings(BaseSettings):
                 raise ValueError("TESTING must be False in production")
             if not self.CELERY_BROKER_URL.strip():
                 raise ValueError("CELERY_BROKER_URL is required in production")
+            if "*" in self.CORS_ORIGINS:
+                raise ValueError("CORS_ORIGINS must not contain '*' in production")
 
         return self
 

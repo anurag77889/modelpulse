@@ -1,22 +1,19 @@
 from contextlib import asynccontextmanager
-from app.core.logging import logger
 
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import status
 from fastapi.responses import JSONResponse
-
-from app.config import settings
-from app.database import Base, engine
-from app.models import Alert, MLModel, Prediction, User  # noqa: F401
-from app.routers import alerts, auth, models, predictions
-
-from app.limiter import limiter
-from slowapi.errors import RateLimitExceeded
 from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 
+from app.config import settings
+from app.core.logging import logger
 from app.core.redis import redis_client
+from app.database import Base, engine
+from app.limiter import limiter
+from app.models import Alert, MLModel, Prediction, User  # noqa: F401
+from app.routers import alerts, auth, models, predictions
 
 
 @asynccontextmanager
@@ -51,17 +48,15 @@ def get_application() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # Tighten CORS in production — only allow your frontend origin
-    origins = ["*"] if settings.DEBUG else [
-        # Add your frontend URL here e.g:
-        # "https://your-frontend.vercel.app",
-        "*"  # change this once you have a frontend URL
-    ]
+    # CORS: only origins explicitly listed in settings are allowed.
+    # Wildcard + credentials is rejected by browsers and forbidden
+    # by config validation in production.
+    origins = settings.CORS_ORIGINS
 
     application.add_middleware(
         CORSMiddleware,
         allow_origins=origins,
-        allow_credentials=True,
+        allow_credentials=bool(origins) and "*" not in origins,
         allow_methods=["*"],
         allow_headers=["*"],
     )
@@ -86,6 +81,7 @@ app = get_application()
 
 
 @app.get("/", tags=["Health"])
+@limiter.exempt
 def health_check():
     return {
         "status": "ok",
@@ -95,27 +91,26 @@ def health_check():
 
 
 @app.get("/health", tags=["Health"])
+@limiter.exempt
 def health():
     """
     Dedicated health check endpoint.
-    Railway/Render ping this to verify the service is alive.
+    Railway pings this to verify the service is alive.
     """
     return {"status": "healthy"}
 
 
 @app.get("/health/redis", tags=["Redis"])
+@limiter.exempt
 def redis_health():
     """
     Dedicated Redis health check endpoint.
-    Railway/Render ping this to verify the redis service is alive.
+    Railway pings this to verify the redis service is alive.
     """
     try:
         redis_client.ping()
 
-        return {
-            "status": "healthy",
-            "service": "redis"
-        }
+        return {"status": "healthy", "service": "redis"}
     except Exception as e:
         logger.warning(f"Redis health check failed: {e}")
         return JSONResponse(
@@ -123,5 +118,5 @@ def redis_health():
             content={
                 "status": "unhealthy",
                 "service": "redis",
-            }
+            },
         )
