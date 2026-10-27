@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import field_validator, model_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     # Browser origins allowed to call this API, e.g.
     # CORS_ORIGINS=["https://app.example.com"]
     CORS_ORIGINS: list[str] = []
+    # Number of reverse proxies in front of the app that append to
+    # X-Forwarded-For (1 = the AWS ALB). 0 ignores the header entirely.
+    TRUSTED_PROXY_COUNT: int = Field(default=1, ge=0)
 
     model_config = SettingsConfigDict(
         env_file=".env",

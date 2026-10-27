@@ -1,6 +1,6 @@
 import logging
 
-from sqlalchemy import func
+from sqlalchemy import and_, func, or_
 from sqlalchemy.orm import Session
 
 from app.models.alert import Alert
@@ -31,25 +31,42 @@ def _compute_drift_score(
     return round(min(drift, 1.0), 4)
 
 
+def _prior_predictions_filter(prediction: Prediction):
+    """
+    Predictions on the same model, with a confidence score, logged
+    strictly before `prediction` (ties on created_at broken by id).
+
+    Drift is scored by a background worker that may run long after the
+    prediction was logged, so "every other prediction" would let later
+    predictions leak into the baseline.
+    """
+    return and_(
+        Prediction.ml_model_id == prediction.ml_model_id,
+        Prediction.confidence_score.is_not(None),
+        or_(
+            Prediction.created_at < prediction.created_at,
+            and_(
+                Prediction.created_at == prediction.created_at,
+                Prediction.id < prediction.id,
+            ),
+        ),
+    )
+
+
 def _get_baseline_stats(
     db: Session,
-    model_id: int,
-    exclude_prediction_id: int,
+    prediction: Prediction,
     window: int = 100,
 ) -> tuple[float, float]:
     """
-    Compute baseline mean and std of confidence scores
-    from the last `window` predictions (excluding the current one).
+    Compute baseline mean and std of confidence scores from the last
+    `window` predictions logged before `prediction`.
 
     This is our reference distribution for drift comparison.
     """
     recent = (
         db.query(Prediction.confidence_score.label("confidence"))
-        .filter(
-            Prediction.ml_model_id == model_id,
-            Prediction.id != exclude_prediction_id,
-            Prediction.confidence_score.is_not(None),
-        )
+        .filter(_prior_predictions_filter(prediction))
         .order_by(Prediction.created_at.desc())
         .limit(window)
         .subquery()
@@ -141,11 +158,7 @@ def run_drift_detection(
         # Need at least 10 prior predictions to establish a baseline
         prior_count = (
             db.query(func.count(Prediction.id))
-            .filter(
-                Prediction.ml_model_id == model_id,
-                Prediction.id != prediction_id,
-                Prediction.confidence_score.is_not(None),
-            )
+            .filter(_prior_predictions_filter(prediction))
             .scalar()
         )
 
@@ -157,9 +170,7 @@ def run_drift_detection(
             return
 
         # Compute baseline from last 100 predictions
-        baseline_mean, baseline_std = _get_baseline_stats(
-            db, model_id, exclude_prediction_id=prediction_id
-        )
+        baseline_mean, baseline_std = _get_baseline_stats(db, prediction)
 
         drift_score = _compute_drift_score(
             current_value=prediction.confidence_score,

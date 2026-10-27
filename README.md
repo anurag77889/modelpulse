@@ -244,6 +244,7 @@ REDIS_CACHE_TTL_SECONDS=
 CELERY_BROKER_URL=
 CELERY_RESULT_BACKEND=
 CORS_ORIGINS=[]          # JSON list, e.g. ["https://app.example.com"]
+TRUSTED_PROXY_COUNT=1    # proxies appending X-Forwarded-For (ALB = 1, none = 0)
 ```
 
 Production mode refuses to start with `DEBUG=True`, `TESTING=True`, a missing
