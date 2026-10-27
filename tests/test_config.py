@@ -20,6 +20,7 @@ SETTINGS_ENV_VARS = (
     "CELERY_RESULT_SERIALIZER",
     "CELERY_ACCEPT_CONTENT",
     "CORS_ORIGINS",
+    "TRUSTED_PROXY_COUNT",
 )
 
 
@@ -159,3 +160,12 @@ def test_production_allows_explicit_cors_origins():
     settings = make_settings(**config)
 
     assert settings.CORS_ORIGINS == ["https://app.example.com"]
+
+
+def test_trusted_proxy_count_defaults_to_one():
+    assert make_settings(**BASE_SETTINGS).TRUSTED_PROXY_COUNT == 1
+
+
+def test_negative_trusted_proxy_count_fails():
+    with pytest.raises(ValidationError, match="TRUSTED_PROXY_COUNT"):
+        make_settings(**BASE_SETTINGS, TRUSTED_PROXY_COUNT=-1)

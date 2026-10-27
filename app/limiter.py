@@ -8,14 +8,19 @@ def client_ip(request) -> str:
     """
     Rate-limit key: the caller's IP.
 
-    Behind a platform proxy (e.g. Railway) every request arrives from
-    the proxy IP, so get_remote_address alone would lump all users
-    into one bucket. Trust the platform-injected X-Forwarded-For
-    header when present.
+    Behind a reverse proxy (e.g. the AWS ALB) every request arrives from
+    the proxy IP, so get_remote_address alone would lump all users into
+    one bucket. Each trusted proxy appends the address it saw to
+    X-Forwarded-For, so the real client is the Nth entry from the right.
+    Entries further left are client-supplied and must never be trusted,
+    or anyone could dodge the limit by sending a fake header.
     """
+    hops = settings.TRUSTED_PROXY_COUNT
     forwarded_for = request.headers.get("X-Forwarded-For")
-    if forwarded_for:
-        return forwarded_for.split(",")[0].strip()
+    if hops and forwarded_for:
+        addresses = [a.strip() for a in forwarded_for.split(",") if a.strip()]
+        if len(addresses) >= hops:
+            return addresses[-hops]
     return get_remote_address(request)
 
 
