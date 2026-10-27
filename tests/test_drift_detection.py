@@ -89,7 +89,11 @@ class TestBaselineStats:
             for i in range(20):
                 _seed_prediction(db, model.id, 0.9, recent_base + timedelta(minutes=i))
 
-            mean, std = _get_baseline_stats(db, model.id, exclude_prediction_id=-1)
+            current = _seed_prediction(
+                db, model.id, 0.5, datetime(2026, 7, 1, tzinfo=UTC)
+            )
+
+            mean, std = _get_baseline_stats(db, current)
 
             # Window keeps the 100 most recent rows: 20 x 0.9 + 80 x 0.1
             # mean = 26 / 100 = 0.26, std = sqrt(0.17 - 0.26^2) = 0.32
@@ -108,9 +112,44 @@ class TestBaselineStats:
                 _seed_prediction(db, model.id, conf, base + timedelta(minutes=i))
             current = _seed_prediction(db, model.id, 0.1, base + timedelta(hours=1))
 
-            mean, _ = _get_baseline_stats(
-                db, model.id, exclude_prediction_id=current.id
-            )
+            mean, _ = _get_baseline_stats(db, current)
+
+            assert round(mean, 4) == 0.8
+        finally:
+            db.close()
+
+    def test_baseline_ignores_later_predictions(self, setup_database):
+        """Regression: the worker may score a prediction after newer ones
+        have been logged; those must not leak into its baseline."""
+        db = TestingSessionLocal()
+        try:
+            model = _seed_model(db)
+            base = datetime(2026, 1, 1, tzinfo=UTC)
+            for i in range(10):
+                _seed_prediction(db, model.id, 0.8, base + timedelta(minutes=i))
+            current = _seed_prediction(db, model.id, 0.1, base + timedelta(hours=1))
+            for i in range(10):
+                _seed_prediction(
+                    db, model.id, 0.2, base + timedelta(hours=2, minutes=i)
+                )
+
+            mean, std = _get_baseline_stats(db, current)
+
+            assert round(mean, 4) == 0.8
+            assert round(std, 4) == 0.0
+        finally:
+            db.close()
+
+    def test_baseline_breaks_created_at_ties_by_id(self, setup_database):
+        db = TestingSessionLocal()
+        try:
+            model = _seed_model(db)
+            same_time = datetime(2026, 1, 1, tzinfo=UTC)
+            _seed_prediction(db, model.id, 0.8, same_time)
+            current = _seed_prediction(db, model.id, 0.1, same_time)
+            _seed_prediction(db, model.id, 0.2, same_time)
+
+            mean, _ = _get_baseline_stats(db, current)
 
             assert round(mean, 4) == 0.8
         finally:
@@ -180,6 +219,26 @@ class TestRunDriftDetection:
             for i in range(9):
                 _seed_prediction(db, model.id, 0.9, base + timedelta(minutes=i))
             current = _seed_prediction(db, model.id, 0.1, base + timedelta(hours=1))
+
+            run_drift_detection(db, prediction_id=current.id, model_id=model.id)
+
+            db.refresh(current)
+            assert current.drift_score is None
+            assert db.query(Alert).count() == 0
+        finally:
+            db.close()
+
+    def test_skips_when_only_later_predictions_exist(self, setup_database):
+        """Regression: a backlogged worker scoring the first prediction
+        must not treat predictions logged after it as history."""
+        db = TestingSessionLocal()
+        try:
+            model = _seed_model(db)
+
+            base = datetime(2026, 1, 1, tzinfo=UTC)
+            current = _seed_prediction(db, model.id, 0.9, base)
+            for i in range(10):
+                _seed_prediction(db, model.id, 0.1, base + timedelta(minutes=i + 1))
 
             run_drift_detection(db, prediction_id=current.id, model_id=model.id)
 
