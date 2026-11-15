@@ -4,7 +4,7 @@ from typing import Optional
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
-from app.core.dependencies import get_current_user
+from app.core.dependencies import require_scopes
 from app.database import get_db
 from app.models.user import User
 from app.schemas.prediction import (
@@ -33,7 +33,7 @@ def log_prediction_route(
     model_id: int,
     payload: PredictionCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("predictions:write")),
 ):
     """
     Log a new prediction for a model.
@@ -54,7 +54,7 @@ def list_predictions_route(
     start_date: Optional[datetime] = Query(default=None),
     end_date: Optional[datetime] = Query(default=None),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("predictions:read")),
 ):
     """
     List predictions for a model with rich filtering.
@@ -89,7 +89,7 @@ def list_predictions_route(
 def prediction_stats_route(
     model_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("predictions:read")),
 ):
     """
     Get aggregated stats for all predictions on this model.
@@ -103,7 +103,7 @@ def get_prediction_route(
     model_id: int,
     prediction_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("predictions:read")),
 ):
     """Fetch a single prediction by ID."""
     return get_prediction_by_id(db, model_id, prediction_id, current_user.id)
@@ -115,7 +115,7 @@ def label_prediction_route(
     prediction_id: int,
     payload: PredictionUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("predictions:write")),
 ):
     """
     Attach a ground truth label to an existing prediction.

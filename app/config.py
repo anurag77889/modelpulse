@@ -11,7 +11,14 @@ class Settings(BaseSettings):
     TESTING: bool = False
     SECRET_KEY: str
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
+    # Rotating refresh tokens issued with user logins
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+    # Access tokens issued to machine clients (client credentials grant)
+    CLIENT_TOKEN_EXPIRE_MINUTES: int = 15
+    # Every access token is bound to this issuer and audience
+    JWT_ISSUER: str = "modelpulse"
+    JWT_AUDIENCE: str = "modelpulse-api"
     DATABASE_URL: str
     REDIS_URL: str
     REDIS_CACHE_TTL_SECONDS: int = 300

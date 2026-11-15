@@ -24,6 +24,11 @@ ForbiddenException = HTTPException(
     detail="Not enough permissions",
 )
 
+UserSessionRequiredException = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail="This action requires a user login, not a machine client token",
+)
+
 DuplicateException = HTTPException(
     status_code=status.HTTP_409_CONFLICT,
     detail="Resource already exists",

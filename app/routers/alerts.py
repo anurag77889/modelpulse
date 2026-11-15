@@ -4,7 +4,7 @@ from typing import Optional
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
-from app.core.dependencies import get_current_user
+from app.core.dependencies import require_scopes
 from app.database import get_db
 from app.models.user import User
 from app.schemas.alert import (
@@ -46,7 +46,7 @@ def list_alerts_route(
     start_date: Optional[datetime] = Query(default=None),
     end_date: Optional[datetime] = Query(default=None),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("alerts:read")),
 ):
     """
     List alerts for a model.
@@ -75,7 +75,7 @@ def list_alerts_route(
 def alert_stats_route(
     model_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("alerts:read")),
 ):
     """
     Get alert counts broken down by severity and type.
@@ -88,7 +88,7 @@ def alert_stats_route(
 def resolve_all_alerts_route(
     model_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("alerts:write")),
 ):
     """
     Bulk resolve all unresolved alerts for a model.
@@ -106,7 +106,7 @@ def get_alert_route(
     model_id: int,
     alert_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("alerts:read")),
 ):
     """Fetch a single alert by ID."""
     return get_alert_by_id(db, model_id, alert_id, current_user.id)
@@ -117,7 +117,7 @@ def resolve_alert_route(
     model_id: int,
     alert_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("alerts:write")),
 ):
     """
     Mark a single alert as resolved.
