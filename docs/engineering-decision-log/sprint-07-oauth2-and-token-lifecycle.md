@@ -1,5 +1,7 @@
 # Sprint 7 – OAuth 2.0 for Machine Clients, Scopes and Rotating Refresh Tokens
 
+> **Status:** Deployed to production on 2026-11-19 (image `bca814e`, ECS task definition `modelpulse-task:7`). Migration `b7e1c4d9a2f6` is applied on RDS.
+
 ## Sprint Overview
 
 Sprint 7 replaced the single, all-powerful login token with a small OAuth 2.0 authorization layer inside ModelPulse. Machine callers such as ML pipelines now authenticate with the **client credentials grant** and receive short-lived tokens limited to the **scopes** they were given. People who log in receive a short-lived access token plus a **rotating refresh token**, so sessions can be renewed and revoked.
@@ -166,6 +168,10 @@ Tests for strict reuse now need the grace window to have passed. Sleeping 10 sec
 
 When Docker Desktop is closed, nothing answers on Redis port 6379, and every test that uses the database fixture errors at setup. A run reporting "17 passed, 45 errors" looked alarming but meant the environment was down, not the code.
 
+## Line Endings Broke a Container Build
+
+While deploying the previous release, an image built from a `git archive` on Windows shipped `entrypoint.sh` with Windows line endings, and the container crashed on startup with `set: Illegal option -`. The file was correct in the repository; Git's line-ending conversion changed it on export. For this release the export was made with `core.autocrlf=false`, checked for carriage returns, and the image's entrypoint was inspected before anything was pushed.
+
 ---
 
 # Lessons Learned
@@ -215,18 +221,28 @@ Choosing between stateless tokens and immediate revocation shapes the whole desi
 
 # What Was Verified
 
+**Before deploying**
+
 - The full suite passes with 175 tests (115 before this sprint), and flake8, black and isort are clean.
 - The two-thread race tests passed in 8 of 8 repeated runs.
 - The grace-window tests fail when the grace is forced to `0`, which confirms they detect the behaviour they claim to.
+- The final image was run locally in production mode with the migration enabled, starting from an empty database. It applied all three revisions through the real `entrypoint.sh`, and a 22-check flow against the running container passed: login, refresh rotation and the grace window, client credentials, scope denial, `/auth/me` refusing client tokens, client revocation and logout.
+
+**After deploying (2026-11-19)**
+
+- The rolling deploy to `modelpulse-task:7` completed with no failed tasks. The old task drained only after the new target turned healthy, so there was no downtime.
+- Migration `b7e1c4d9a2f6` applied on RDS at startup (upgrade from `9f4c2e8a71b3`) and the app started cleanly.
+- Through the ALB, the new routes are served (29 operations in total). Protected routes return 403 without a token and 401 with a bad one. `/oauth/token` returns RFC 6749 errors with `Cache-Control: no-store`, and unknown CORS origins are rejected.
+- Rollback path: `modelpulse-task:6` still points at the previous image (`67064d7`) in ECR. The migration is additive, so a rollback needs no database change.
 
 ---
 
 # What Is Not Yet Verified
 
-- The code is not deployed. Production still runs the previous release.
-- Migration `b7e1c4d9a2f6` has run against the local test database only, not against RDS.
-- The race tests used two threads on a local PostgreSQL, not multiple ECS tasks.
-- A live run against a real local server (login, client creation, token exchange, scope denial, rotation, replay, revocation, and two rate limits) passed 11 of 11 checks, but it ran before the grace window and `/auth/me` changes. Those changes are covered by automated tests instead.
+- **Authenticated flows on production.** Login, refresh rotation, client credentials and scope enforcement have not been exercised against the deployed service, because that needs a test account in the production database. They passed against the identical image locally.
+- **Rejection of pre-deploy tokens, live.** The forged-token probe against production used an unknown signing key and would have failed on its signature alone, so this behaviour rests on the automated test `test_legacy_token_without_claims_rejected`.
+- **Multiple tasks.** The race tests used two threads on a local PostgreSQL, not several ECS tasks.
+- **Redis is still not deployed.** Rate limits are therefore per task, and Celery drift scoring does not run in production.
 
 ---
 
