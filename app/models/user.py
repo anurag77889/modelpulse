@@ -8,6 +8,8 @@ from app.database import Base
 
 if TYPE_CHECKING:
     from .ml_model import MLModel
+    from .oauth_client import OAuthClient
+    from .refresh_token import RefreshToken
 
 
 class User(Base):
@@ -30,4 +32,10 @@ class User(Base):
     # Relationships
     ml_models: Mapped[list["MLModel"]] = relationship(
         "MLModel", back_populates="owner", cascade="all, delete-orphan"
+    )
+    oauth_clients: Mapped[list["OAuthClient"]] = relationship(
+        "OAuthClient", back_populates="owner", cascade="all, delete-orphan"
+    )
+    refresh_tokens: Mapped[list["RefreshToken"]] = relationship(
+        "RefreshToken", back_populates="user", cascade="all, delete-orphan"
     )

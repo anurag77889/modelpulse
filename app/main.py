@@ -13,7 +13,7 @@ from app.core.redis import redis_client
 from app.database import Base, engine
 from app.limiter import limiter
 from app.models import Alert, MLModel, Prediction, User  # noqa: F401
-from app.routers import alerts, auth, models, predictions
+from app.routers import alerts, auth, models, oauth, predictions
 
 
 @asynccontextmanager
@@ -70,6 +70,7 @@ def get_application() -> FastAPI:
     application.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
     application.include_router(auth.router)
+    application.include_router(oauth.router)
     application.include_router(models.router)
     application.include_router(predictions.router)
     application.include_router(alerts.router)

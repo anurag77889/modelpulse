@@ -203,3 +203,38 @@ def celery_eager():
 
     celery_app.conf.task_always_eager = old
     celery_app.conf.task_eager_propagates = old_propagates
+
+
+@pytest.fixture
+def make_oauth_client(client: TestClient, auth_headers: dict):
+    """Factory: register a machine client for the test user and return the
+    create response (includes client_id and the one-time client_secret)."""
+
+    def _make(scopes: list[str], name: str = "test-pipeline") -> dict:
+        response = client.post(
+            "/oauth/clients",
+            json={"name": name, "scopes": scopes},
+            headers=auth_headers,
+        )
+        assert response.status_code == 201, response.text
+        return response.json()
+
+    return _make
+
+
+@pytest.fixture
+def client_token(client: TestClient, make_oauth_client):
+    """Factory: create a client with `scopes` and return Bearer headers for
+    an access token obtained through the client credentials grant."""
+
+    def _token(scopes: list[str]) -> dict:
+        creds = make_oauth_client(scopes)
+        response = client.post(
+            "/oauth/token",
+            data={"grant_type": "client_credentials"},
+            auth=(creds["client_id"], creds["client_secret"]),
+        )
+        assert response.status_code == 200, response.text
+        return {"Authorization": f"Bearer {response.json()['access_token']}"}
+
+    return _token

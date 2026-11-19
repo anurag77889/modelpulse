@@ -237,7 +237,12 @@ DEBUG=
 TESTING=
 SECRET_KEY=
 ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=
+ACCESS_TOKEN_EXPIRE_MINUTES=15
+REFRESH_TOKEN_EXPIRE_DAYS=7
+REFRESH_REUSE_GRACE_SECONDS=10
+CLIENT_TOKEN_EXPIRE_MINUTES=15
+JWT_ISSUER=modelpulse
+JWT_AUDIENCE=modelpulse-api
 DATABASE_URL=
 REDIS_URL=
 REDIS_CACHE_TTL_SECONDS=
@@ -259,27 +264,79 @@ Resource groups:
 
 | Prefix                          | Purpose                          |
 | ------------------------------- | -------------------------------- |
-| `/auth`                         | Register, login, current user    |
+| `/auth`                         | Register, login, refresh, logout |
+| `/oauth`                        | Token endpoint, machine clients  |
 | `/models`                       | Model registry CRUD + summaries  |
 | `/models/{id}/predictions`      | Log and query predictions        |
 | `/models/{id}/alerts`           | List, filter and resolve alerts  |
 
 ## Authentication
 
-All protected endpoints require a JWT bearer token:
+ModelPulse is an OAuth 2.0 resource server and a minimal authorization server.
+Every access token is a short-lived JWT bound to an issuer (`JWT_ISSUER`), an
+audience (`JWT_AUDIENCE`) and a set of **scopes**. Every model, prediction and
+alert is also scoped to its owner, so cross-user access returns 403/404.
 
-1. `POST /auth/register` — create an account (rate-limited: 3/min)
-2. `POST /auth/login` — receive `{ "access_token": "...", "token_type": "bearer" }`
-3. Send it on every request: `Authorization: Bearer <token>`
+| Scope               | Allows                                   |
+| ------------------- | ---------------------------------------- |
+| `models:read`       | Read models and model summaries          |
+| `models:write`      | Create, update and delete models         |
+| `predictions:read`  | Read predictions and prediction stats    |
+| `predictions:write` | Log predictions, attach ground truth     |
+| `alerts:read`       | Read alerts and alert stats              |
+| `alerts:write`      | Resolve alerts                           |
+
+A token without the required scope gets `403` with
+`WWW-Authenticate: Bearer error="insufficient_scope"`.
+
+### People: login + rotating refresh tokens
+
+1. `POST /auth/register`: create an account (3/min)
+2. `POST /auth/login`: returns an access token (all scopes, 15 min) and a
+   single-use `refresh_token` (7 days)
+3. `POST /auth/refresh` with `{"refresh_token": "..."}`: returns a new pair.
+   Each refresh token is meant to work **once**. Presenting a used one again
+   is treated as theft and revokes the whole session, **unless** it is
+   re-presented within `REFRESH_REUSE_GRACE_SECONDS` (default 10). That
+   window covers a retry after a lost response or two tabs refreshing at
+   once: the repeat gets its own new token instead of logging the user out.
+   Set it to `0` for strict single use.
+4. `POST /auth/logout` with `{"refresh_token": "..."}`: revokes the session
 
 ```bash
-curl -X POST http://localhost:8000/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"you@example.com","password":"yourpassword"}'
+curl -X POST http://localhost:8000/auth/login   -H "Content-Type: application/json"   -d '{"email":"you@example.com","password":"yourpassword"}'
 ```
 
-Tokens expire after `ACCESS_TOKEN_EXPIRE_MINUTES` (default 30). Every model,
-prediction and alert is scoped to its owner — cross-user access returns 403/404.
+### Machines: client credentials grant (RFC 6749 §4.4)
+
+Give each pipeline its own least-privilege credentials instead of a person's
+password. Manage clients with a **user** token. A client token can't create or
+manage clients, and can't read the owner's profile (`GET /auth/me` is for user
+logins only):
+
+| Endpoint                                  | Purpose                                  |
+| ----------------------------------------- | ---------------------------------------- |
+| `POST /oauth/clients`                     | Create; the secret is shown **once**     |
+| `GET /oauth/clients`                      | List (secrets are never shown)           |
+| `POST /oauth/clients/{id}/rotate-secret`  | Replace the secret; the old one stops working |
+| `DELETE /oauth/clients/{id}`              | Revoke; its live tokens are rejected immediately |
+
+```bash
+# 1. Create a client that can only log predictions
+curl -X POST http://localhost:8000/oauth/clients   -H "Authorization: Bearer $USER_TOKEN" -H "Content-Type: application/json"   -d '{"name":"churn-pipeline","scopes":["predictions:write"]}'
+
+# 2. The pipeline exchanges its credentials for a 15-minute token
+curl -X POST http://localhost:8000/oauth/token   -u "$CLIENT_ID:$CLIENT_SECRET"   -d grant_type=client_credentials
+
+# 3. ...and calls the API with it
+curl -X POST http://localhost:8000/models/1/predictions/   -H "Authorization: Bearer $CLIENT_TOKEN" -H "Content-Type: application/json"   -d '{"input_data":{"age":34},"prediction_output":{"label":"churn"},"confidence_score":0.87}'
+```
+
+`/oauth/token` accepts HTTP Basic or `client_id`/`client_secret` form fields,
+an optional `scope` to narrow the token, and returns RFC 6749 errors
+(`invalid_client`, `invalid_scope`, `unsupported_grant_type`, ...). No refresh
+token is issued; clients simply request a new token when theirs expires.
+Secrets and refresh tokens are stored only as SHA-256 hashes.
 
 ## Database Schema
 
@@ -289,6 +346,8 @@ prediction and alert is scoped to its owner — cross-user access returns 403/40
 | `ml_models` | Registered models: owner, status, drift threshold                    |
 | `predictions` | Logged predictions: input/output JSON, confidence, latency, drift score |
 | `alerts`    | Generated alerts: type, severity, resolved status                    |
+| `oauth_clients` | Machine clients: hashed secret, scopes, owner, revocation       |
+| `refresh_tokens` | Hashed rotating refresh tokens grouped into session families   |
 
 The schema is managed exclusively through Alembic (`alembic upgrade head`).
 All timestamps are timezone-aware UTC.
@@ -323,7 +382,6 @@ All timestamps are timezone-aware UTC.
 
 ## Future Improvements
 
-- Refresh tokens with server-side revocation (Redis denylist)
 - API versioning (`/api/v1`) and stricter request contracts
 - Unit tests for the drift-detection math; enforce a coverage floor in CI
 - Prometheus metrics + Grafana dashboards

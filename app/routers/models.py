@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
-from app.core.dependencies import get_current_user
+from app.core.dependencies import require_scopes
 from app.database import get_db
 from app.models.user import User
 from app.schemas.ml_model import (
@@ -27,7 +27,7 @@ router = APIRouter(prefix="/models", tags=["ML Models"])
 def register_model(
     payload: MLModelCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("models:write")),
 ):
     """Register a new ML model. Authenticated users only."""
     return create_model(db, payload, owner_id=current_user.id)
@@ -40,7 +40,7 @@ def list_models(
     status: str | None = Query(default=None, description="Filter by status"),
     model_type: str | None = Query(default=None, description="Filter by type"),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("models:read")),
 ):
     """
     List all models owned by the current user.
@@ -61,7 +61,7 @@ def list_models(
 def get_model(
     model_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("models:read")),
 ):
     """Get a single model by ID. Only the owner can view it."""
     model = get_model_for_user(db, model_id, current_user.id)
@@ -73,7 +73,7 @@ def update_model_route(
     model_id: int,
     payload: MLModelUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("models:write")),
 ):
     """
     Partially update a model.
@@ -87,7 +87,7 @@ def update_model_route(
 def delete_model_route(
     model_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("models:write")),
 ):
     """
     Delete a model and all associated predictions and alerts.
@@ -101,7 +101,7 @@ def delete_model_route(
 def model_summary(
     model_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_scopes("models:read")),
 ):
     """
     Get aggregated stats for a model:
