@@ -239,6 +239,7 @@ SECRET_KEY=
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=15
 REFRESH_TOKEN_EXPIRE_DAYS=7
+REFRESH_REUSE_GRACE_SECONDS=10
 CLIENT_TOKEN_EXPIRE_MINUTES=15
 JWT_ISSUER=modelpulse
 JWT_AUDIENCE=modelpulse-api
@@ -294,8 +295,12 @@ A token without the required scope gets `403` with
 2. `POST /auth/login`: returns an access token (all scopes, 15 min) and a
    single-use `refresh_token` (7 days)
 3. `POST /auth/refresh` with `{"refresh_token": "..."}`: returns a new pair.
-   Each refresh token works **once**. Presenting a used one again is treated
-   as theft and revokes the whole session.
+   Each refresh token is meant to work **once**. Presenting a used one again
+   is treated as theft and revokes the whole session, **unless** it is
+   re-presented within `REFRESH_REUSE_GRACE_SECONDS` (default 10). That
+   window covers a retry after a lost response or two tabs refreshing at
+   once: the repeat gets its own new token instead of logging the user out.
+   Set it to `0` for strict single use.
 4. `POST /auth/logout` with `{"refresh_token": "..."}`: revokes the session
 
 ```bash
@@ -305,8 +310,9 @@ curl -X POST http://localhost:8000/auth/login   -H "Content-Type: application/js
 ### Machines: client credentials grant (RFC 6749 §4.4)
 
 Give each pipeline its own least-privilege credentials instead of a person's
-password. Manage clients with a **user** token (a client token can't create
-or manage clients):
+password. Manage clients with a **user** token. A client token can't create or
+manage clients, and can't read the owner's profile (`GET /auth/me` is for user
+logins only):
 
 | Endpoint                                  | Purpose                                  |
 | ----------------------------------------- | ---------------------------------------- |

@@ -14,6 +14,10 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
     # Rotating refresh tokens issued with user logins
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+    # A refresh token re-presented this soon after it was used is treated as
+    # a retry or double-submit (it gets a sibling token) rather than theft.
+    # 0 makes reuse strict: any replay revokes the whole session.
+    REFRESH_REUSE_GRACE_SECONDS: int = Field(default=10, ge=0)
     # Access tokens issued to machine clients (client credentials grant)
     CLIENT_TOKEN_EXPIRE_MINUTES: int = 15
     # Every access token is bound to this issuer and audience

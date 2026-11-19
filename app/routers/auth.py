@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Request, Response
 from sqlalchemy.orm import Session
 
-from app.core.dependencies import get_current_user
+from app.core.dependencies import require_user_session
 from app.database import get_db
 from app.limiter import limiter
 from app.models.user import User
@@ -75,6 +75,10 @@ def logout(request: Request, payload: RefreshRequest, db: Session = Depends(get_
 
 
 @router.get("/me", response_model=UserResponse)
-def get_me(current_user: User = Depends(get_current_user)):
-    """Get the currently authenticated user's profile."""
+def get_me(current_user: User = Depends(require_user_session)):
+    """
+    Get the logged-in user's profile.
+    Machine client tokens are refused: a pipeline scoped to e.g.
+    predictions:write has no business reading its owner's email.
+    """
     return current_user

@@ -50,6 +50,18 @@ def _revoke_family(db: Session, family_id: str, now: datetime) -> int:
     )
 
 
+def _within_reuse_grace(token: RefreshToken, now: datetime) -> bool:
+    """True if `token` was used so recently that a second presentation is
+    most likely a client retry or double-submit, not a stolen copy."""
+    if settings.REFRESH_REUSE_GRACE_SECONDS <= 0:
+        # Strict mode. Checked first: two racing requests read the clock a
+        # few microseconds apart, so the loser's "age" can come out negative
+        # and would otherwise slip under a grace of zero.
+        return False
+    grace = timedelta(seconds=settings.REFRESH_REUSE_GRACE_SECONDS)
+    return token.used_at is not None and now - token.used_at <= grace
+
+
 def issue_user_tokens(db: Session, user: User) -> dict:
     """Start a new session: access token plus the first refresh token."""
     refresh_token = _issue_refresh_token(db, user.id, family_id=uuid.uuid4().hex)
@@ -61,10 +73,15 @@ def rotate_refresh_token(db: Session, raw_token: str) -> dict:
     """
     Exchange a refresh token for a new access + refresh token pair.
 
-    The presented token is marked used and can never be used again.
-    If an already-used token comes back, someone else holds a copy of
-    it, so every token in its family is revoked and the caller must
-    log in again.
+    The presented token is marked used. If it comes back after the grace
+    window (REFRESH_REUSE_GRACE_SECONDS), someone else holds a copy, so
+    every token in its family is revoked and the caller must log in again.
+
+    Inside the grace window a repeat is treated as a retry (a lost
+    response, two tabs refreshing together): it is given its own new
+    token in the same family. Tradeoff: for those few seconds a stolen
+    copy of the old token also works, but after that the usual reuse
+    detection applies to every token in the family.
     """
     token = (
         db.query(RefreshToken)
@@ -88,16 +105,31 @@ def rotate_refresh_token(db: Session, raw_token: str) -> dict:
         .update({"used_at": now}, synchronize_session=False)
     )
     if claimed == 0:
-        revoked = _revoke_family(db, token.family_id, now)
-        db.commit()
-        logger.warning(
-            "[TokenService] Refresh token reuse detected for user_id=%s; "
-            "revoked %s token(s) in family %s",
+        # Lost the race, or the token was used or revoked earlier. Re-read
+        # it: our copy was loaded before the competing request committed.
+        db.refresh(token)
+        if token.revoked_at is not None:
+            raise CredentialsException
+
+        if not _within_reuse_grace(token, now):
+            revoked = _revoke_family(db, token.family_id, now)
+            db.commit()
+            logger.warning(
+                "[TokenService] Refresh token reuse detected for user_id=%s; "
+                "revoked %s token(s) in family %s",
+                token.user_id,
+                revoked,
+                token.family_id,
+            )
+            raise CredentialsException
+
+        logger.info(
+            "[TokenService] Refresh token re-presented within %ss grace for "
+            "user_id=%s; issuing a sibling token in family %s",
+            settings.REFRESH_REUSE_GRACE_SECONDS,
             token.user_id,
-            revoked,
             token.family_id,
         )
-        raise CredentialsException
 
     user = db.query(User).filter(User.id == token.user_id).first()
     if user is None or not user.is_active:

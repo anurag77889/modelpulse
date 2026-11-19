@@ -252,10 +252,19 @@ class TestScopeEnforcement:
         )
         assert response.status_code in (403, 404)
 
-    def test_me_works_for_client_tokens(
+    def test_me_rejects_client_tokens(
         self, client: TestClient, client_token, registered_user: dict
     ):
-        headers = client_token(["models:read"])
-        response = client.get("/auth/me", headers=headers)
+        """A pipeline scoped to e.g. predictions:write must not be able to
+        read its owner's email and username."""
+        for scopes in (["models:read"], ["predictions:write"]):
+            response = client.get("/auth/me", headers=client_token(scopes))
+            assert response.status_code == 403
+            assert registered_user["email"] not in response.text
+
+    def test_me_still_works_for_user_logins(
+        self, client: TestClient, auth_headers: dict, registered_user: dict
+    ):
+        response = client.get("/auth/me", headers=auth_headers)
         assert response.status_code == 200
         assert response.json()["id"] == registered_user["id"]

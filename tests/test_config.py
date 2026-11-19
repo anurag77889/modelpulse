@@ -22,6 +22,7 @@ SETTINGS_ENV_VARS = (
     "CORS_ORIGINS",
     "TRUSTED_PROXY_COUNT",
     "REFRESH_TOKEN_EXPIRE_DAYS",
+    "REFRESH_REUSE_GRACE_SECONDS",
     "CLIENT_TOKEN_EXPIRE_MINUTES",
     "JWT_ISSUER",
     "JWT_AUDIENCE",
@@ -173,3 +174,17 @@ def test_trusted_proxy_count_defaults_to_one():
 def test_negative_trusted_proxy_count_fails():
     with pytest.raises(ValidationError, match="TRUSTED_PROXY_COUNT"):
         make_settings(**BASE_SETTINGS, TRUSTED_PROXY_COUNT=-1)
+
+
+def test_refresh_reuse_grace_defaults_to_ten_seconds():
+    assert make_settings(**BASE_SETTINGS).REFRESH_REUSE_GRACE_SECONDS == 10
+
+
+def test_refresh_reuse_grace_can_be_disabled():
+    settings = make_settings(**BASE_SETTINGS, REFRESH_REUSE_GRACE_SECONDS=0)
+    assert settings.REFRESH_REUSE_GRACE_SECONDS == 0
+
+
+def test_negative_refresh_reuse_grace_fails():
+    with pytest.raises(ValidationError, match="REFRESH_REUSE_GRACE_SECONDS"):
+        make_settings(**BASE_SETTINGS, REFRESH_REUSE_GRACE_SECONDS=-1)

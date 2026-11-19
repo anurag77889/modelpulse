@@ -1,5 +1,8 @@
+import threading
+from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime, timedelta
 
+from fastapi import HTTPException
 from fastapi.testclient import TestClient
 from jose import jwt
 
@@ -8,6 +11,7 @@ from app.core.scopes import ALL_SCOPES
 from app.core.security import create_access_token
 from app.models.refresh_token import RefreshToken
 from app.models.user import User
+from app.services.token_service import rotate_refresh_token
 from tests.conftest import TestingSessionLocal
 
 LOGIN = {"email": "test@example.com", "password": "testpassword123"}
@@ -21,6 +25,22 @@ def _login(client: TestClient) -> dict:
 
 def _refresh(client: TestClient, refresh_token: str):
     return client.post("/auth/refresh", json={"refresh_token": refresh_token})
+
+
+def _age_used_tokens(seconds: float) -> None:
+    """Pretend every used refresh token was used `seconds` ago, to step
+    past the reuse grace window without sleeping."""
+    db = TestingSessionLocal()
+    try:
+        db.query(RefreshToken).filter(RefreshToken.used_at.is_not(None)).update(
+            {"used_at": datetime.now(UTC) - timedelta(seconds=seconds)}
+        )
+        db.commit()
+    finally:
+        db.close()
+
+
+PAST_GRACE = settings.REFRESH_REUSE_GRACE_SECONDS + 5
 
 
 class TestLoginTokens:
@@ -80,6 +100,7 @@ class TestRefreshRotation:
     ):
         first = _login(client)
         assert _refresh(client, first["refresh_token"]).status_code == 200
+        _age_used_tokens(PAST_GRACE)
         assert _refresh(client, first["refresh_token"]).status_code == 401
 
     def test_reuse_revokes_whole_family(
@@ -89,6 +110,7 @@ class TestRefreshRotation:
         the legitimate holder's newer token must stop working too."""
         first = _login(client)
         second = _refresh(client, first["refresh_token"]).json()
+        _age_used_tokens(PAST_GRACE)
 
         assert _refresh(client, first["refresh_token"]).status_code == 401  # replay
         assert _refresh(client, second["refresh_token"]).status_code == 401
@@ -99,6 +121,7 @@ class TestRefreshRotation:
         session_a = _login(client)
         session_b = _login(client)
         _refresh(client, session_a["refresh_token"])
+        _age_used_tokens(PAST_GRACE)
         _refresh(client, session_a["refresh_token"])  # replay kills session A
 
         assert _refresh(client, session_b["refresh_token"]).status_code == 200
@@ -134,6 +157,104 @@ class TestRefreshRotation:
 
     def test_empty_body_rejected(self, client: TestClient):
         assert client.post("/auth/refresh", json={}).status_code == 422
+
+
+class TestReuseGraceWindow:
+    def test_replay_within_grace_gets_a_sibling_token(
+        self, client: TestClient, registered_user: dict
+    ):
+        """A retry after a lost response must not log the user out."""
+        first = _login(client)
+        a = _refresh(client, first["refresh_token"])
+        b = _refresh(client, first["refresh_token"])  # immediate retry
+
+        assert a.status_code == 200 and b.status_code == 200
+        assert a.json()["refresh_token"] != b.json()["refresh_token"]
+        for pair in (a.json(), b.json()):
+            me = client.get(
+                "/auth/me",
+                headers={"Authorization": f"Bearer {pair['access_token']}"},
+            )
+            assert me.status_code == 200
+
+    def test_both_branches_stay_usable(self, client: TestClient, registered_user: dict):
+        first = _login(client)
+        a = _refresh(client, first["refresh_token"]).json()
+        b = _refresh(client, first["refresh_token"]).json()
+
+        assert _refresh(client, a["refresh_token"]).status_code == 200
+        assert _refresh(client, b["refresh_token"]).status_code == 200
+
+    def test_grace_window_expires(self, client: TestClient, registered_user: dict):
+        first = _login(client)
+        a = _refresh(client, first["refresh_token"]).json()
+        _age_used_tokens(PAST_GRACE)
+
+        assert _refresh(client, first["refresh_token"]).status_code == 401
+        # reuse after the window is theft: the whole family dies
+        assert _refresh(client, a["refresh_token"]).status_code == 401
+
+    def test_zero_grace_makes_reuse_strict(
+        self, client: TestClient, registered_user: dict, monkeypatch
+    ):
+        monkeypatch.setattr(settings, "REFRESH_REUSE_GRACE_SECONDS", 0)
+        first = _login(client)
+        a = _refresh(client, first["refresh_token"]).json()
+
+        assert _refresh(client, first["refresh_token"]).status_code == 401
+        assert _refresh(client, a["refresh_token"]).status_code == 401
+
+    def test_grace_never_revives_a_revoked_session(
+        self, client: TestClient, registered_user: dict
+    ):
+        first = _login(client)
+        second = _refresh(client, first["refresh_token"]).json()
+        client.post("/auth/logout", json={"refresh_token": second["refresh_token"]})
+
+        # `first` was used moments ago, but its session has been logged out
+        assert _refresh(client, first["refresh_token"]).status_code == 401
+
+
+class TestConcurrentRotation:
+    """Two requests presenting the same refresh token at the same instant,
+    each on its own database session (as separate workers would be)."""
+
+    def _race(self, raw_token: str) -> list:
+        barrier = threading.Barrier(2)
+
+        def attempt():
+            db = TestingSessionLocal()
+            try:
+                barrier.wait(timeout=10)
+                return rotate_refresh_token(db, raw_token)
+            except HTTPException as exc:
+                return exc
+            finally:
+                db.close()
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            futures = [pool.submit(attempt), pool.submit(attempt)]
+            return [f.result(timeout=30) for f in futures]
+
+    def test_strict_mode_lets_exactly_one_request_win(
+        self, client: TestClient, registered_user: dict, monkeypatch
+    ):
+        monkeypatch.setattr(settings, "REFRESH_REUSE_GRACE_SECONDS", 0)
+        results = self._race(_login(client)["refresh_token"])
+
+        winners = [r for r in results if isinstance(r, dict)]
+        losers = [r for r in results if isinstance(r, HTTPException)]
+        assert len(winners) == 1
+        assert len(losers) == 1
+        assert losers[0].status_code == 401
+
+    def test_grace_mode_serves_both_with_distinct_tokens(
+        self, client: TestClient, registered_user: dict
+    ):
+        results = self._race(_login(client)["refresh_token"])
+
+        assert all(isinstance(r, dict) for r in results)
+        assert results[0]["refresh_token"] != results[1]["refresh_token"]
 
 
 class TestLogout:
